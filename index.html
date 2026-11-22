@@ -1,0 +1,3228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#2b4c3f" />
+  <meta name="description" content="Passatempos clássicos de Caça-Palavras e Palavras Cruzadas em português, com temas, dicas e loja de moedas." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <title>Almanaque &amp; Letra — Caça-Palavras e Cruzadas</title>
+  <style>
+    :root {
+      --bg: #f4efe4;
+      --bg-pattern: radial-gradient(rgba(43, 76, 63, 0.08) 1px, transparent 0);
+      --surface: #fcfaf4;
+      --surface-2: #efe8d8;
+      --ink: #1f2924;
+      --muted: #5d6b64;
+      --accent: #2b4c3f;
+      --accent-soft: rgba(43, 76, 63, 0.14);
+      --accent-2: #c26d38;
+      --gold: #b8831c;
+      --ok: #257a4b;
+      --err: #c0392b;
+      --border: rgba(31, 41, 36, 0.16);
+      --shadow: 0 10px 28px rgba(31, 41, 36, 0.09);
+      --highlight: rgba(194, 109, 56, 0.22);
+      --active-word: rgba(43, 76, 63, 0.18);
+      --radius: 14px;
+    }
+
+    body[data-theme="moleskine"] {
+      --bg: #ebd9be;
+      --bg-pattern: repeating-linear-gradient(0deg, rgba(72, 48, 28, 0.04) 0px, rgba(72, 48, 28, 0.04) 1px, transparent 1px, transparent 22px);
+      --surface: #f8eedc;
+      --surface-2: #ead9bc;
+      --ink: #382516;
+      --muted: #785a40;
+      --accent: #7a4419;
+      --accent-soft: rgba(122, 68, 25, 0.15);
+      --accent-2: #b45309;
+      --gold: #a16207;
+      --ok: #2f6f3e;
+      --err: #b91c1c;
+      --border: rgba(56, 37, 22, 0.20);
+      --shadow: 0 10px 24px rgba(56, 37, 22, 0.12);
+      --highlight: rgba(217, 119, 6, 0.25);
+      --active-word: rgba(122, 68, 25, 0.18);
+    }
+
+    body[data-theme="noite"] {
+      --bg: #0f172a;
+      --bg-pattern: radial-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 0);
+      --surface: #182338;
+      --surface-2: #22304b;
+      --ink: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.16);
+      --accent-2: #f59e0b;
+      --gold: #facc15;
+      --ok: #34d399;
+      --err: #f87171;
+      --border: rgba(148, 163, 184, 0.22);
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      --highlight: rgba(245, 158, 11, 0.26);
+      --active-word: rgba(56, 189, 248, 0.20);
+    }
+
+    body[data-theme="coquetel"] {
+      --bg: #f1f5f9;
+      --bg-pattern: radial-gradient(rgba(29, 78, 216, 0.07) 1px, transparent 0);
+      --surface: #ffffff;
+      --surface-2: #e2e8f0;
+      --ink: #0f172a;
+      --muted: #475569;
+      --accent: #1d4ed8;
+      --accent-soft: rgba(29, 78, 216, 0.14);
+      --accent-2: #e11d48;
+      --gold: #d97706;
+      --ok: #059669;
+      --err: #dc2626;
+      --border: rgba(15, 23, 42, 0.16);
+      --shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+      --highlight: rgba(225, 29, 72, 0.20);
+      --active-word: rgba(29, 78, 216, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background-color: var(--bg);
+      background-image: var(--bg-pattern);
+      background-size: 18px 18px;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      overscroll-behavior-y: none;
+    }
+
+    button, input {
+      font-family: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      transition: transform 0.12s ease, background-color 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    button.secondary {
+      background: var(--accent-2);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding: 12px 14px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 900px) {
+      .app-shell {
+        max-width: 1260px;
+        padding: 18px 26px 40px;
+      }
+    }
+
+    header.topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: var(--accent);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.14);
+      flex-shrink: 0;
+    }
+
+    .brand-icon-box img {
+      width: 26px;
+      height: 26px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.12rem;
+      line-height: 1.1;
+    }
+
+    .brand small {
+      display: block;
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      font-size: 1.05rem;
+      border-radius: 10px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    /* Onboarding */
+    .avatar-box {
+      width: 74px;
+      height: 74px;
+      border-radius: 50%;
+      border: 2.5px solid var(--accent);
+      background: var(--surface-2);
+      display: grid;
+      place-items: center;
+      font-size: 2rem;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .avatar-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-box.gold-frame {
+      border: 3px solid var(--gold);
+      box-shadow: 0 0 0 3px rgba(184, 131, 28, 0.28), 0 6px 16px rgba(184, 131, 28, 0.35);
+    }
+
+    .icon-picker {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .icon-choice {
+      height: 36px;
+      padding: 0;
+      font-size: 1.15rem;
+      display: grid;
+      place-items: center;
+    }
+
+    .icon-choice.selected {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    .input-text {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      font-size: 0.95rem;
+    }
+
+    /* Lobby */
+    .lobby-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    @media (min-width: 900px) {
+      .lobby-grid {
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        align-items: start;
+        gap: 20px;
+      }
+    }
+
+    .profile-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .coins-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--gold);
+      background: rgba(184, 131, 28, 0.14);
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    .mode-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .mode-btn {
+      padding: 10px 8px;
+      text-align: center;
+      border-radius: 11px;
+      font-size: 0.86rem;
+    }
+
+    .mode-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .diff-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .diff-btn {
+      padding: 8px 4px;
+      font-size: 0.76rem;
+      text-align: center;
+    }
+
+    .diff-btn.active {
+      background: var(--ink);
+      color: var(--surface);
+      border-color: var(--ink);
+    }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .cat-btn {
+      padding: 8px 6px;
+      font-size: 0.76rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      text-align: center;
+    }
+
+    .cat-btn.active {
+      background: var(--accent-2);
+      color: #fff;
+      border-color: var(--accent-2);
+    }
+
+    .levels-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 900px) {
+      .levels-grid {
+        grid-template-columns: repeat(10, 1fr);
+      }
+    }
+
+    .lvl-tile {
+      aspect-ratio: 1 / 1;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      font-weight: 800;
+      background: var(--surface-2);
+    }
+
+    .lvl-tile.done {
+      background: rgba(37, 122, 75, 0.14);
+      border-color: var(--ok);
+      color: var(--ok);
+    }
+
+    /* Game Workspace */
+    .game-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 900px) {
+      .game-layout {
+        display: grid;
+        grid-template-columns: minmax(420px, 560px) 1fr;
+        align-items: start;
+        gap: 20px;
+      }
+    }
+
+    .board-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* Word Search Grid */
+    .ws-grid {
+      display: grid;
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      aspect-ratio: 1 / 1;
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--surface);
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    .ws-cell {
+      display: grid;
+      place-items: center;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      font-size: clamp(0.74rem, 2.7vw, 1.15rem);
+      border: 1px solid rgba(128, 128, 128, 0.14);
+      transition: background-color 0.08s ease, transform 0.08s ease;
+      cursor: pointer;
+    }
+
+    .ws-cell.selecting {
+      background: var(--highlight);
+      transform: scale(0.95);
+    }
+
+    .ws-cell.tap-start {
+      box-shadow: inset 0 0 0 3px var(--accent-2);
+      background: var(--highlight);
+      animation: pulseTap 0.8s infinite alternate;
+    }
+
+    @keyframes pulseTap {
+      from { transform: scale(0.94); }
+      to { transform: scale(1.05); }
+    }
+
+    .ws-cell.found {
+      background: var(--active-word);
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .ws-cell.bonus-found {
+      background: rgba(184, 131, 28, 0.28);
+      color: var(--gold);
+      box-shadow: inset 0 0 0 1.5px rgba(184, 131, 28, 0.45);
+      font-weight: 900;
+    }
+
+    .ws-cell.hinted {
+      box-shadow: inset 0 0 0 2.5px var(--accent-2);
+      background: var(--highlight);
+    }
+
+    .ws-cell.bonus-hinted {
+      box-shadow: inset 0 0 0 3px var(--gold);
+      background: rgba(184, 131, 28, 0.34);
+      animation: pulseGold 1.2s infinite alternate;
+    }
+
+    @keyframes pulseGold {
+      from { transform: scale(0.95); }
+      to { transform: scale(1.03); }
+    }
+
+    /* Crossword Grid */
+    .cw-grid {
+      display: grid;
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      aspect-ratio: 1 / 1;
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--ink);
+      touch-action: pan-y;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .cw-cell {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 800;
+      font-size: clamp(0.84rem, 3.1vw, 1.25rem);
+      cursor: pointer;
+      transition: background-color 0.12s ease;
+    }
+
+    .cw-cell.block {
+      background: var(--accent);
+      cursor: default;
+    }
+
+    .cw-cell.in-word {
+      background: var(--active-word);
+    }
+
+    .cw-cell.cursor {
+      background: var(--highlight);
+      box-shadow: inset 0 0 0 2.5px var(--accent-2);
+    }
+
+    .cw-cell.wrong {
+      color: var(--err);
+      background: rgba(192, 57, 43, 0.14);
+    }
+
+    .cw-cell.correct-lock {
+      color: var(--ok);
+      font-weight: 900;
+    }
+
+    .cw-num {
+      position: absolute;
+      top: 1px;
+      left: 3px;
+      font-family: -apple-system, sans-serif;
+      font-size: 0.54rem;
+      font-weight: 800;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    /* Word chips & Clues */
+    .word-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .word-chip {
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+
+    .word-chip:active {
+      transform: scale(0.95);
+    }
+
+    .word-chip.found {
+      text-decoration: line-through;
+      opacity: 0.52;
+      background: rgba(37, 122, 75, 0.14);
+      color: var(--ok);
+    }
+
+    .bonus-panel {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--surface-2);
+      border: 1px dashed var(--gold);
+      font-size: 0.82rem;
+    }
+
+    .bonus-slots {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .bonus-slot {
+      padding: 6px 4px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bonus-slot.revealed {
+      background: rgba(184, 131, 28, 0.22);
+      border-color: var(--gold);
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .bonus-slot.peeked {
+      background: rgba(184, 131, 28, 0.12);
+      border: 1px dashed var(--gold);
+      color: var(--gold);
+    }
+
+    /* Shop Modal & Cards */
+    .shop-tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 6px;
+      margin: 10px 0 12px;
+    }
+
+    .shop-tab {
+      padding: 8px 6px;
+      font-size: 0.82rem;
+      text-align: center;
+      border-radius: 9px;
+    }
+
+    .shop-tab.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .shop-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 360px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .shop-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+    }
+
+    .shop-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .shop-item-title {
+      font-weight: 800;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .shop-item-desc {
+      font-size: 0.76rem;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height: 1.25;
+    }
+
+    .cw-active-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      background: var(--surface-2);
+      border-left: 4px solid var(--accent-2);
+      margin-bottom: 10px;
+      touch-action: pan-y;
+      cursor: pointer;
+    }
+
+    .cw-clues-list {
+      margin: 6px 0 0;
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.86rem;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .cw-clues-list li {
+      cursor: pointer;
+      line-height: 1.3;
+      padding: 2px 4px;
+      border-radius: 6px;
+    }
+
+    .cw-clues-list li.active-clue {
+      font-weight: 800;
+      color: var(--accent-2);
+      background: var(--accent-soft);
+    }
+
+    .cw-clues-list li.solved-clue {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    /* Virtual Keyboard */
+    .v-keyboard {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 10px;
+    }
+
+    .kb-row {
+      display: flex;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .kb-key {
+      flex: 1;
+      min-width: 0;
+      max-width: 44px;
+      height: 40px;
+      padding: 0;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .kb-key.action-key {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 800;
+      max-width: 48px;
+    }
+
+    .kb-key.wide {
+      max-width: 56px;
+      font-size: 0.86rem;
+    }
+
+    /* Hint & Reaction Toolbar */
+    .tools-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .tools-bar button {
+      font-size: 0.78rem;
+      padding: 7px 9px;
+    }
+
+    /* Floating Sticker Toast */
+    .sticker-stage {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      display: grid;
+      place-items: center;
+      z-index: 80;
+    }
+
+    .sticker-pop {
+      background: var(--surface);
+      border: 3px solid var(--accent-2);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+      border-radius: 22px;
+      padding: 14px 22px;
+      text-align: center;
+      animation: stickerAnim 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .sticker-pop.err {
+      border-color: var(--err);
+    }
+
+    .sticker-pop .st-emoji {
+      font-size: 2.8rem;
+      display: block;
+      line-height: 1.05;
+    }
+
+    .sticker-pop .st-label {
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      margin-top: 4px;
+      display: block;
+    }
+
+    @keyframes stickerAnim {
+      0% { opacity: 0; transform: scale(0.4) rotate(-10deg); }
+      22% { opacity: 1; transform: scale(1.08) rotate(3deg); }
+      75% { opacity: 1; transform: scale(1) rotate(0deg); }
+      100% { opacity: 0; transform: scale(0.9) translateY(-18px); }
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.58);
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      z-index: 90;
+      backdrop-filter: blur(2px);
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* Quick Pill Toast */
+    .quick-toast {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: var(--ink);
+      color: var(--surface);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .quick-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body data-theme="almanaque">
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon-box">
+          <img src="favicon.svg" alt="Ícone Almanaque" />
+        </div>
+        <div>
+          <h1>Almanaque &amp; Letra</h1>
+          <small>Caça-Palavras &amp; Cruzadas</small>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button id="btnBackHome" class="icon-btn hidden" title="Voltar ao Lobby" aria-label="Voltar">📚</button>
+        <button id="btnHelp" class="icon-btn" title="Como Jogar" aria-label="Ajuda">❓</button>
+        <button id="btnShopTop" class="icon-btn" title="Loja de Moedas" aria-label="Loja">🏪</button>
+        <button id="btnStickerCheer" class="icon-btn hidden" title="Soltar Sticker" aria-label="Sticker">😜</button>
+        <button id="btnSound" class="icon-btn" title="Alternar Som" aria-label="Som">🔊</button>
+        <button id="btnTheme" class="icon-btn" title="Trocar Tema Visual" aria-label="Tema">🎨</button>
+        <button id="btnProfile" class="icon-btn" title="Perfil / Credencial" aria-label="Perfil">👤</button>
+      </div>
+    </header>
+
+    <!-- ONBOARDING / CREDENTIAL -->
+    <section id="viewOnboarding" class="card hidden">
+      <h2 style="margin-top:0">Credencial de Passatempos</h2>
+      <p style="color:var(--muted);font-size:0.88rem;margin-top:0">
+        Personalize seu perfil ou entre direto para começar a jogar sem complicações!
+      </p>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+        <div id="onbAvatarPreview" class="avatar-box">📖</div>
+        <div style="flex:1">
+          <label style="font-size:0.8rem;font-weight:700;display:block;margin-bottom:4px">Seu Nome ou Apelido</label>
+          <input id="onbName" class="input-text" type="text" maxlength="24" placeholder="Ex: Eder" />
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button id="btnTakePhoto" type="button">📷 Câmera</button>
+        <button id="btnPickGallery" type="button">🖼️ Galeria</button>
+        <input id="inputCamera" type="file" accept="image/*" capture="user" class="hidden" />
+        <input id="inputGallery" type="file" accept="image/*" class="hidden" />
+      </div>
+      <div class="icon-picker" id="onbIconPicker"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:16px;flex-wrap:wrap">
+        <button id="btnQuickPlay" type="button" class="secondary">⚡ Jogar Agora (Sem Cadastro)</button>
+        <div style="display:flex;gap:8px">
+          <button id="btnCancelProfile" type="button" class="hidden">Cancelar</button>
+          <button id="btnSaveProfile" type="button" class="primary">Entrar no Almanaque</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOBBY -->
+    <section id="viewLobby" class="lobby-grid hidden">
+      <div class="card">
+        <div class="profile-row">
+          <div id="lobbyAvatar" class="avatar-box">📖</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap">
+              <h2 id="lobbyName" style="margin:0;font-size:1.1rem">Leitor</h2>
+              <div style="display:flex;align-items:center;gap:5px">
+                <span id="lobbyCoins" class="coins-pill">🪙 120</span>
+                <button id="btnShopLobby" type="button" style="padding:4px 9px;font-size:0.78rem;background:var(--gold);color:#fff;border:none">🏪 Loja</button>
+              </div>
+            </div>
+            <div id="lobbyStats" style="font-size:0.82rem;color:var(--muted);margin-top:3px">0 fases concluídas</div>
+          </div>
+        </div>
+
+        <div class="mode-switch" id="modeSwitch">
+          <button class="mode-btn active" data-mode="ws">🔎 Caça-Palavras</button>
+          <button class="mode-btn" data-mode="cw">✏️ Palavras Cruzadas</button>
+        </div>
+
+        <div class="diff-row" id="diffRow">
+          <button class="diff-btn active" data-diff="easy">🟢 Fácil</button>
+          <button class="diff-btn" data-diff="medium">🟡 Médio</button>
+          <button class="diff-btn" data-diff="hard">🔴 Difícil</button>
+          <button class="diff-btn" data-diff="mage">🔮 Mago</button>
+        </div>
+
+        <div style="font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted);margin-top:12px">
+          Categoria Temática
+        </div>
+        <div class="cat-grid" id="catGrid"></div>
+
+        <button id="btnPlayNext" class="primary" style="width:100%;margin-top:12px">▶ Jogar Próxima Fase</button>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <h3 id="levelsHeader" style="margin:0;font-size:1rem">Fases (1 a 50)</h3>
+          <span id="levelsSubInfo" style="font-size:0.78rem;color:var(--muted)">50 variações</span>
+        </div>
+        <div id="levelsGrid" class="levels-grid"></div>
+      </div>
+    </section>
+
+    <!-- GAME VIEW -->
+    <section id="viewGame" class="game-layout hidden">
+      <div class="card">
+        <div class="board-meta">
+          <strong id="gameHeaderBadge">FASE #01</strong>
+          <span id="gameProgressLabel">0/5</span>
+          <span id="gameCoinsBadge" class="coins-pill">🪙 120</span>
+        </div>
+
+        <div id="wsContainer">
+          <div id="wsGrid" class="ws-grid"></div>
+        </div>
+
+        <div id="cwContainer" class="hidden">
+          <div id="cwGrid" class="cw-grid"></div>
+        </div>
+
+        <div class="tools-bar">
+          <button id="btnHintSubtle">🔍 Dica Sutil (10🪙)</button>
+          <button id="btnHintLetter">✨ Revelar Letra (20🪙)</button>
+          <button id="btnHintWord">🎯 Revelar Palavra (35🪙)</button>
+          <button id="btnOpenShopInGame" style="background:var(--gold);color:#fff;border:none">🏪 Loja &amp; Poderes</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <!-- Word Search Side Panel -->
+        <div id="wsSidePanel">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <h3 style="margin:0;font-size:1rem">Palavras para Procurar</h3>
+            <span style="font-size:0.75rem;color:var(--muted)">Toque p/ ver significado</span>
+          </div>
+          <div id="wsWordChips" class="word-chips"></div>
+
+          <div class="bonus-panel">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
+              <strong id="wsBonusRewardTitle">🌟 6 Palavras Bônus (+25🪙 cada)</strong>
+              <span id="wsBonusCounter" style="font-weight:800;color:var(--gold)">0/6</span>
+            </div>
+            <div style="font-size:0.76rem;color:var(--muted);margin-top:2px">
+              Palavras secretas ocultas na grade: normais, verticais ou invertidas!
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+              <button id="btnRevealBonusList" type="button" style="font-size:0.75rem;padding:5px 9px">👁️ Ver Lista (30🪙)</button>
+              <button id="btnRadarBonus" type="button" style="font-size:0.75rem;padding:5px 9px">🧭 Radar Bônus (15🪙)</button>
+            </div>
+            <div id="wsBonusSlots" class="bonus-slots"></div>
+          </div>
+        </div>
+
+        <!-- Crossword Side Panel -->
+        <div id="cwSidePanel" class="hidden">
+          <div id="cwActiveBanner" class="cw-active-banner">
+            <button id="btnPrevClue" type="button" style="padding:5px 8px">◀</button>
+            <div style="flex:1;text-align:center">
+              <div id="cwActiveDir" style="font-size:0.72rem;font-weight:800;color:var(--accent-2);text-transform:uppercase">HORIZONTAL</div>
+              <div id="cwActiveClueText" style="font-size:0.86rem;font-weight:700">Selecione uma palavra</div>
+            </div>
+            <button id="btnNextClue" type="button" style="padding:5px 8px">▶</button>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <span style="font-size:0.76rem;font-weight:800;color:var(--muted);text-transform:uppercase">Pistas das Cruzadas</span>
+            <button id="btnToggleDir" type="button" style="padding:4px 8px;font-size:0.75rem">↔ Direção</button>
+          </div>
+          <ul id="cwCluesList" class="cw-clues-list"></ul>
+
+          <div id="vKeyboard" class="v-keyboard"></div>
+        </div>
+
+        <div id="gameTipFeedback" style="margin-top:12px;padding:9px 11px;border-radius:10px;background:var(--accent-soft);font-size:0.82rem">
+          💡 Dica: Arraste ou toque na 1ª e na última letra no Caça-Palavras. Nas Cruzadas, use o teclado ou as setas!
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FLOATING STICKER LAYER -->
+  <div id="stickerStage" class="sticker-stage"></div>
+
+  <!-- FLOATING QUICK TOAST -->
+  <div id="quickToast" class="quick-toast"></div>
+
+  <!-- WIN MODAL -->
+  <div id="winModal" class="modal-backdrop hidden">
+    <div class="modal-card" style="text-align:center">
+      <div style="font-size:2.8rem">🏆</div>
+      <h2 id="winTitle" style="margin:6px 0">Fase Concluída!</h2>
+      <p id="winDesc" style="font-size:0.9rem;color:var(--muted)"></p>
+      <div style="display:flex;justify-content:center;gap:8px;margin-top:16px">
+        <button id="btnWinLobby">Escolher Fase</button>
+        <button id="btnWinNext" class="primary">Próxima Fase →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELP MODAL -->
+  <div id="helpModal" class="modal-backdrop hidden">
+    <div class="modal-card" style="max-width:480px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <h2 style="margin:0;font-size:1.15rem">📖 Como Jogar o Almanaque</h2>
+        <button id="btnCloseHelp" type="button" style="padding:4px 9px">✕</button>
+      </div>
+
+      <div class="shop-tabs" style="margin-top:12px">
+        <button id="tabHelpWS" type="button" class="shop-tab active">🔎 Caça-Palavras</button>
+        <button id="tabHelpCW" type="button" class="shop-tab">✏️ Cruzadas</button>
+        <button id="tabHelpTips" type="button" class="shop-tab">🪙 Moedas &amp; Dicas</button>
+      </div>
+
+      <div id="helpContentWS">
+        <p><strong>🎯 Duas Formas de Selecionar:</strong></p>
+        <ul style="padding-left:18px;margin:6px 0;font-size:0.86rem;line-height:1.4">
+          <li><strong>Arrastando:</strong> Deslize o dedo ou o mouse do início até o final da palavra.</li>
+          <li><strong>Toque na 1ª e na última letra:</strong> Toque na primeira letra e depois na última. Muito fácil e relaxante no celular!</li>
+        </ul>
+        <p style="margin-top:10px"><strong>🌟 6 Palavras Bônus Secretas:</strong></p>
+        <p style="font-size:0.86rem;color:var(--muted);margin-top:2px">
+          Toda fase esconde 6 palavras secretas extras (+25🪙 a +40🪙). Fique atento à grade!
+        </p>
+        <p style="margin-top:10px"><strong>💡 Dica Rápida:</strong></p>
+        <p style="font-size:0.86rem;color:var(--muted);margin-top:2px">
+          Toque em qualquer palavra da lista de procura para ler seu significado!
+        </p>
+      </div>
+
+      <div id="helpContentCW" class="hidden">
+        <p><strong>✏️ Como Preencher:</strong></p>
+        <ul style="padding-left:18px;margin:6px 0;font-size:0.86rem;line-height:1.4">
+          <li>Toque em qualquer quadrado branco para ativá-lo.</li>
+          <li>Digite usando o teclado na tela ou o teclado físico do seu computador/tablet.</li>
+          <li>Ao digitar, o cursor avança automaticamente para a próxima letra vazia!</li>
+        </ul>
+        <p style="margin-top:10px"><strong>↔ Alternar Direção (Horizontal / Vertical):</strong></p>
+        <p style="font-size:0.86rem;color:var(--muted);margin-top:2px">
+          Toque no mesmo quadrado duas vezes, aperte a barra de <strong>Espaço</strong> ou toque no botão <strong>↔</strong> no teclado virtual!
+        </p>
+        <p style="margin-top:10px"><strong>👆 Trocar de Palavra:</strong></p>
+        <p style="font-size:0.86rem;color:var(--muted);margin-top:2px">
+          Deslize no banner da dica ou use <strong>Tab</strong>, <strong>Enter</strong> ou as <strong>Setas</strong> do teclado.
+        </p>
+      </div>
+
+      <div id="helpContentTips" class="hidden">
+        <p><strong>🪙 Como Ganhar Moedas:</strong></p>
+        <ul style="padding-left:18px;margin:6px 0;font-size:0.86rem;line-height:1.4">
+          <li>Vença fases: ganhe +20🪙 na primeira vitória e +5🪙 ao jogar novamente.</li>
+          <li>Encontre palavras bônus escondidas para faturar +25🪙 (ou +40🪙 com o Amuleto)!</li>
+        </ul>
+        <p style="margin-top:10px"><strong>🏪 O que Comprar na Loja:</strong></p>
+        <ul style="padding-left:18px;margin:6px 0;font-size:0.86rem;line-height:1.4">
+          <li><strong>Dicas na partida:</strong> Dica sutil, revelar letra, radar de bônus ou completar palavra inteira.</li>
+          <li><strong>Melhorias permanentes:</strong> Novos temas visuais elegantes, avatares exclusivos e moldura dourada!</li>
+        </ul>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-top:14px">
+        <button id="btnGotItHelp" type="button" class="primary" style="width:100%">Entendi, vamos jogar!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOP MODAL -->
+  <div id="shopModal" class="modal-backdrop hidden">
+    <div class="modal-card" style="max-width:460px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <h2 style="margin:0;font-size:1.12rem">🏪 Loja do Almanaque</h2>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span id="shopModalCoins" class="coins-pill">🪙 120</span>
+          <button id="btnCloseShop" type="button" style="padding:4px 9px">✕</button>
+        </div>
+      </div>
+      <p style="margin:4px 0 0;font-size:0.8rem;color:var(--muted)">
+        Use suas moedas para poderes na partida ou melhorias visuais permanentes.
+      </p>
+
+      <div class="shop-tabs">
+        <button id="tabShopMatch" type="button" class="shop-tab active">⚡ Na Partida</button>
+        <button id="tabShopPerm" type="button" class="shop-tab">🏅 Itens Permanentes</button>
+      </div>
+
+      <div id="shopFeedbackBanner" style="font-size:0.78rem;padding:7px 10px;border-radius:9px;background:var(--accent-soft);margin-bottom:8px">
+        Escolha um poder ou item exclusivo abaixo!
+      </div>
+
+      <div id="shopListContainer" class="shop-list"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch(() => {});
+        });
+      }
+
+      const STORAGE_KEY = "almanaque_letra_pwa_v2";
+      const THEMES = ["almanaque", "moleskine", "noite", "coquetel"];
+      const BASE_ICONS = ["📖", "✏️", "🦉", "🌿", "✝️", "🎬", "🎸", "☕"];
+      const EXTRA_ICONS = ["🔮", "👑", "🦊", "🚀", "🏆", "🧭", "🎨", "🌟"];
+      
+      const CATEGORIES = [
+        {
+          id: "cristao",
+          label: "Cristão",
+          emoji: "✝️",
+          entries: [
+            ["GRACA", "Favor imerecido concedido por Deus"],
+            ["AMOR", "O maior e mais nobre dos mandamentos"],
+            ["PAZ", "Tranquilidade que excede todo o entendimento"],
+            ["SALMO", "Cântico poético das Sagradas Escrituras"],
+            ["PROFETA", "Mensageiro inspirado pela voz divina"],
+            ["APOSTOLO", "Enviado para anunciar as Boas Novas"],
+            ["BATISMO", "Símbolo público de renascimento espiritual"],
+            ["ORACAO", "Diálogo íntimo e sincero com o Criador"],
+            ["PERDAO", "Ato de misericórdia que restaura corações"],
+            ["ESPERANCA", "Confiança inabalável nas promessas divinas"],
+            ["SABEDORIA", "Discernimento virtuoso que vem do alto"],
+            ["JUSTICA", "Retidão de conduta aos olhos de Deus"],
+            ["MISERICORDIA", "Compaixão que acolhe os necessitados"],
+            ["EVANGELHO", "Mensagem de salvação e esperança"],
+            ["DISCIPULO", "Seguidor fiel e aprendiz do Mestre"],
+            ["PARABOLA", "Narrativa com profundo ensinamento moral"],
+            ["MILAGRE", "Manifestação extraordinária da graça"],
+            ["TEMPLO", "Lugar sagrado de oração e adoração"],
+            ["MANNA", "Alimento celestial provido no deserto"],
+            ["ALIANCA", "Pacto sagrado entre Deus e a humanidade"],
+            ["LOUVOR", "Expressão jubilosa de gratidão e fé"],
+            ["CRENCA", "Convicção firme na verdade espiritual"],
+            ["ADORACAO", "Reconhecimento da grandeza do Senhor"],
+            ["REDENCAO", "Libertação e salvação pelo amor divino"],
+            ["COMUNHAO", "União fraternal em torno da mesma fé"],
+            ["GRATIDAO", "Reconhecimento sincero de todas as bênçãos"],
+            ["BENDICAO", "Consagração do favor e proteção do Alto"],
+            ["PROVIDENCIA", "Cuidado soberano e constante do Criador"],
+            ["TESTEMUNHO", "Relato vivo da transformação espiritual"],
+            ["FIDELIDADE", "Lealdade incondicional aos preceitos da fé"]
+          ]
+        },
+        {
+          id: "filmes",
+          label: "Filmes",
+          emoji: "🎬",
+          entries: [
+            ["CENA", "Unidade dramática gravada em um filme"],
+            ["ATOR", "Artista que dá vida e voz a um personagem"],
+            ["OSCAR", "A mais prestigiada estatueta do cinema"],
+            ["ROTEIRO", "Texto que guia os diálogos e ações"],
+            ["DRAMA", "Gênero voltado a temas densos e humanos"],
+            ["COMEDIA", "Gênero cinematográfico focado no riso"],
+            ["FICCAO", "Narrativa de futuros ou mundos imaginários"],
+            ["ANIMACAO", "Filme feito por ilustrações ou computação"],
+            ["DIRETOR", "Responsável por reger toda a visão do filme"],
+            ["TRILHA", "Música que intensifica a emoção de cada cena"],
+            ["PIPOCA", "O clássico aperitivo nas salas de projeção"],
+            ["ESTREIA", "Primeira exibição oficial para o público"],
+            ["SUSPENSE", "Tensão psicológica que prende a respiração"],
+            ["AVENTURA", "Jornada repleta de perigos e ação"],
+            ["BILHETERIA", "Arrecadação total de ingressos vendidos"],
+            ["DUBLAGEM", "Vozes gravadas no idioma do espectador"],
+            ["HEROIS", "Protagonistas corajosos que superam o mal"],
+            ["CAMERA", "Equipamento óptico que capta o cinema"],
+            ["ELENCO", "Grupo de atores reunidos na produção"],
+            ["FIGURINO", "Trajes que definem época e personalidade"],
+            ["TRAILER", "Vídeo promocional que antecipa o lançamento"],
+            ["CINEMA", "A sétima arte vivida na tela grande"],
+            ["CLAQUETE", "Instrumento que sincroniza som e imagem"],
+            ["MONTAGEM", "Corte e costura do ritmo final da obra"],
+            ["CENARIO", "Ambiente construído para situar a história"],
+            ["FESTIVAL", "Mostra competitiva de cinema mundial"],
+            ["CINEASTA", "Criador e pensador da linguagem fílmica"],
+            ["SEQUENCIA", "Continuação de uma obra de sucesso"],
+            ["ESTUDIO", "Instalação onde os filmes são produzidos"],
+            ["PRODUCAO", "Planejamento que viabiliza a execução da obra"]
+          ]
+        },
+        {
+          id: "musica",
+          label: "Música",
+          emoji: "🎸",
+          entries: [
+            ["VIOLA", "Instrumento rústico de dez cordas de aço"],
+            ["SAMBA", "Gênero e alma da cultura popular brasileira"],
+            ["BAIAO", "Cadência nordestina imortalizada no fole"],
+            ["ACORDE", "Harmonia gerada por notas simultâneas"],
+            ["RITMO", "Divisão ordenada do tempo sonoro"],
+            ["MELODIA", "Linha sucessiva de notas cantadas"],
+            ["REFRAO", "Estrofe marcante que se repete na música"],
+            ["VIOLEIRO", "Músico talentoso que ponteia a viola"],
+            ["MODAO", "Canção nostálgica do sertanejo raiz"],
+            ["FORRO", "Dança e celebração típica do Nordeste"],
+            ["CHORO", "Música instrumental virtuosística do Brasil"],
+            ["BOSSA", "Movimento musical suave dos anos cinquenta"],
+            ["SANFONA", "Acordeão de teclas, fole e baixos"],
+            ["PARTITURA", "Registro gráfico oficial das notas musicais"],
+            ["SERESTA", "Canto noturno entoado sob janelas"],
+            ["COMPACTO", "Disco histórico de vinil de poucas faixas"],
+            ["TOADA", "Canto bucólico que narra causos sertanejos"],
+            ["PAGODE", "Reunião festiva de batuque e descontração"],
+            ["HARMONIA", "Ciência que estuda o encadeamento sonoro"],
+            ["CANTORIA", "Desafio rimado de cantadores e repentistas"],
+            ["ESCALA", "Série ordenada de tons e semitons"],
+            ["DUETO", "Composição interpretada a duas vozes"],
+            ["ARRANJO", "Adaptação criativa de uma obra musical"],
+            ["SONORIDADE", "Identidade acústica e timbre particular"],
+            ["COMPOSITOR", "Criador da letra ou melodia original"],
+            ["SINFONIA", "Grande composição executada por orquestra"],
+            ["BATUCADA", "Sessão vigorosa de percussão no samba"],
+            ["PERCUSSAO", "Instrumentos que marcam o tempo por impacto"],
+            ["POESIA", "Arte da palavra que se transforma em canção"],
+            ["SOLISTA", "Intérprete que brilha no centro do palco"]
+          ]
+        },
+        {
+          id: "natureza",
+          label: "Natureza",
+          emoji: "🌿",
+          entries: [
+            ["FLOR", "Expressão de beleza e reprodução vegetal"],
+            ["LAGO", "Bacia de águas calmas em meio à terra"],
+            ["SERRA", "Alinhamento imponente de montanhas"],
+            ["MATA", "Extensão verdejante de floresta nativa"],
+            ["VENTO", "Massa de ar que sopra sobre a paisagem"],
+            ["CHUVA", "Bênção hídrica que irriga os campos"],
+            ["NUVEM", "Vapor condensado que flutua no firmamento"],
+            ["CERRADO", "Savana brasileira com árvores retorcidas"],
+            ["PANTANAL", "Paraíso ecológico de planícies alagáveis"],
+            ["OCEANO", "Imensa profundeza que banha os continentes"],
+            ["CASCATA", "Queda d'água refrescante sobre rochedos"],
+            ["ORVALHO", "Gotículas serenas que reluzem ao alvorecer"],
+            ["ESTRELA", "Ponto de luz cintilante na abóbada celeste"],
+            ["ARVORE", "Monumento vivo de tronco, folhas e frutos"],
+            ["SEMENTE", "Potencial de vida prestes a germinar"],
+            ["AURORA", "Primeira luz dourada que rompe a madrugada"],
+            ["RIACHO", "Veio cristalino que serpenteia a mata"],
+            ["BOSQUE", "Arborização acolhedora de ar puro"],
+            ["NEBLINA", "Vera bruma mística que toca o chão"],
+            ["COLINA", "Relevo suave e verdejante no horizonte"],
+            ["TRILHA", "Vereda natural explorada pelos passos"],
+            ["FAUNA", "Diversidade rica de animais da região"],
+            ["MONTANHA", "Pico grandioso que desafia as alturas"],
+            ["ARQUIPELAGO", "Conjunto gracioso de ilhas oceânicas"],
+            ["VEGETACAO", "Cobertura de plantas que veste a Terra"],
+            ["HORIZONTE", "Linha distante onde terra e céu se tocam"],
+            ["CREPUSCULO", "Entardecer suave que precede a noite"],
+            ["PLANALTO", "Superfície elevada com vistas panorâmicas"],
+            ["MANANCIAL", "Fonte pura de onde brota água potável"],
+            ["FLORESTA", "Ecossistema soberano de biodiversidade"]
+          ]
+        },
+        {
+          id: "culinaria",
+          label: "Culinária",
+          emoji: "🍲",
+          entries: [
+            ["BOLO", "Receita clássica assada para o café da tarde"],
+            ["CAFE", "Preparo aromático que aquece os dias"],
+            ["MEL", "Néctar dourado colhido pelas abelhas"],
+            ["PAO", "Alimento primordial à base de trigo e fermento"],
+            ["QUEIJO", "Iguaria láctea curada ou frescal de minas"],
+            ["FEIJOADA", "O prato que resume a hospitalidade nacional"],
+            ["PAMONHA", "Manjar cremoso de milho cozido na palha"],
+            ["TAPIOCA", "Beiju leve preparado na frigideira quente"],
+            ["MOQUECA", "Caldeirada rica com azeite de dendê e ervas"],
+            ["CANELA", "Casca perfumada que perfuma doces e mingaus"],
+            ["MANJERICAO", "Folha fresca que coroa massas e molhos"],
+            ["BRIGADEIRO", "Doce festivo enrolado com granulado de cacau"],
+            ["CUSCUZ", "Prato de milho flocoso cozido no vapor"],
+            ["ACEROLA", "Fruta rubra rica em frescor e vitamina"],
+            ["GOIABADA", "Doce tradicional que faz par com o queijo"],
+            ["TEMPERO", "Alquimia de ervas que acorda qualquer receita"],
+            ["FARINHA", "Base crocante da farofa e do sustento"],
+            ["CALDO", "Conforto líquido fumegante para a noite"],
+            ["ASSADO", "Carne ou legumes dourados no calor do forno"],
+            ["DOCE", "Afago açucarado que encerra a refeição"],
+            ["GELEIA", "Redução brilhante de frutas frescas"],
+            ["BROA", "Quitute rústico perfumado com erva-doce"],
+            ["ESPECIARIA", "Ingrediente exótico que perfuma o prato"],
+            ["SOBREMESA", "Momento mais aguardado do banquete"],
+            ["FAROFA", "Acompanhamento crocante indispensável à mesa"],
+            ["PETISCO", "Aperitivo saboroso para beliscar com amigos"],
+            ["COZINHA", "Coração acolhedor da casa de família"],
+            ["BANQUETE", "Festa farta em torno de receitas especiais"],
+            ["RECEITA", "Segredo passado de geração em geração"],
+            ["DEGUSTACAO", "Ato refinado de saborear cada ingrediente"]
+          ]
+        },
+        {
+          id: "diversos",
+          label: "Diversos",
+          emoji: "🎲",
+          entries: [
+            ["LIVRO", "Portal de sabedoria e aventuras em papel"],
+            ["MAPA", "Guia ilustrado para desbravar o desconhecido"],
+            ["RELOGIO", "Guardião incansável dos minutos da vida"],
+            ["BUSSOLA", "Agulha magnética que sempre acha o Norte"],
+            ["JANELA", "Moldura transparente para a luz do mundo"],
+            ["CHAVE", "Segredo metálico que desvenda passagens"],
+            ["PONTE", "Estrutura engenhosa que une duas margens"],
+            ["FAROL", "Sentinela costeira que ilumina os navegantes"],
+            ["CADERNO", "Companheiro fiel para rascunhos e memórias"],
+            ["LANTERNA", "Fachada de luz portátil contra a escuridão"],
+            ["ESCOLA", "Solo fértil para cultivar o conhecimento"],
+            ["VIAGEM", "Partida em busca de horizontes inéditos"],
+            ["MEMORIA", "Tesouro interior que guarda o que amamos"],
+            ["DESAFIO", "Enigma que aguça o raciocínio e a perícia"],
+            ["AMIZADE", "Abraço fraterno fundado na lealdade"],
+            ["ALMANAQUE", "Livro recheado de enigmas, ciência e letras"],
+            ["MUSEU", "Templo dedicado à salvaguarda do tempo"],
+            ["TEATRO", "Palco da emoção expressada ao vivo"],
+            ["JARDIM", "Espaço pacífico cultivado com carinho"],
+            ["ESTANTE", "Móvel que acolhe coleções e relíquias"],
+            ["QUADRO", "Pintura emoldurada que encanta o olhar"],
+            ["MALA", "Bagagem arrumada para novos caminhos"],
+            ["AVENTURA", "Empreitada corajosa cheia de surpresas"],
+            ["CONHECIMENTO", "Luz que ilumina a mente humana"],
+            ["CULTURA", "Herança espiritual e artística de um povo"],
+            ["UNIVERSO", "A infinita tapeçaria das galáxias"],
+            ["HISTORIA", "Fio condutor da trajetória humana"],
+            ["CURIOSIDADE", "Centelha que move as grandes descobertas"],
+            ["EXPERIENCIA", "Bagagem colhida com o passar dos anos"],
+            ["HARMONIA", "Equilíbrio pacífico entre todas as coisas"]
+          ]
+        }
+      ];
+
+      const OK_STICKERS = [
+        { emoji: "🎯", label: "Na Mosca!" },
+        { emoji: "🦅", label: "Olho de Águia!" },
+        { emoji: "✨", label: "Mandou Bem!" },
+        { emoji: "🔥", label: "Sequência Quente!" },
+        { emoji: "👏", label: "Excelente!" }
+      ];
+
+      const ERR_STICKERS = [
+        { emoji: "😅", label: "Quase lá!" },
+        { emoji: "💨", label: "Passou Raspando!" },
+        { emoji: "🔄", label: "Tente de Novo!" },
+        { emoji: "🕵️", label: "Pista Falsa!" },
+        { emoji: "🤔", label: "Outra Direção!" }
+      ];
+
+      function normalizeWord(w) {
+        return w.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/[^A-Z]/g, "");
+      }
+
+      function mulberry32(seed) {
+        let a = seed >>> 0;
+        return function () {
+          a |= 0;
+          a = (a + 0x6d2b79f5) | 0;
+          let t = Math.imul(a ^ (a >>> 15), 1 | a);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            parsed.shop = parsed.shop || {
+              unlockedThemes: ["almanaque", "moleskine"],
+              extraIcons: false,
+              goldFrame: false,
+              doubleBonus: false
+            };
+            return parsed;
+          }
+        } catch (e) {}
+        return {
+          profile: null,
+          theme: "almanaque",
+          sound: true,
+          coins: 120,
+          completed: {},
+          shop: {
+            unlockedThemes: ["almanaque", "moleskine"],
+            extraIcons: false,
+            goldFrame: false,
+            doubleBonus: false
+          }
+        };
+      }
+
+      let state = loadState();
+      let currentMode = "ws";
+      let currentDiff = "easy";
+      let currentCat = "cristao";
+      let activeLevel = 1;
+      let audioCtx = null;
+      let activeShopTab = "match";
+
+      // Word search state
+      let wsData = null;
+      let wsFoundSet = new Set();
+      let wsBonusFoundSet = new Set();
+      let wsBonusListRevealed = false;
+      let wsSelecting = false;
+      let wsStartCell = null;
+      let wsCurrentPath = [];
+      let wsHintedCells = new Set();
+      let wsBonusHintedCells = new Set();
+      let wsTapStartCell = null;
+      let wsCellElements = []; // Fast 2D array cache of DOM cells
+
+      // Crossword state
+      let cwData = null;
+      let cwUserGrid = [];
+      let cwActiveWordIdx = 0;
+      let cwCursor = { r: 0, c: 0 };
+      let cwDirection = "H";
+      let cwWrongCells = new Set();
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {}
+      }
+
+      function playSound(kind) {
+        if (!state.sound) return;
+        try {
+          if (!audioCtx) {
+            const Ctx = window.AudioContext || window.webkitAudioContext;
+            if (Ctx) audioCtx = new Ctx();
+          }
+          if (!audioCtx) return;
+          if (audioCtx.state === "suspended") {
+            audioCtx.resume();
+          }
+
+          const now = audioCtx.currentTime;
+
+          if (kind === "win") {
+            // Fanfarra triunfal: C5 -> E5 -> G5 -> C6
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            notes.forEach((freq, idx) => {
+              const o = audioCtx.createOscillator();
+              const g = audioCtx.createGain();
+              o.connect(g);
+              g.connect(audioCtx.destination);
+              const t = now + idx * 0.09;
+              o.frequency.setValueAtTime(freq, t);
+              g.gain.setValueAtTime(0.08, t);
+              g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+              o.start(t);
+              o.stop(t + 0.28);
+            });
+            if (navigator.vibrate) navigator.vibrate([30, 40, 60]);
+            return;
+          }
+
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          if (kind === "ok") {
+            osc.frequency.setValueAtTime(523.25, now);
+            gain.gain.setValueAtTime(0.06, now);
+            osc.frequency.setValueAtTime(783.99, now + 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+            osc.start(now);
+            osc.stop(now + 0.2);
+          } else if (kind === "err") {
+            osc.frequency.setValueAtTime(220, now);
+            gain.gain.setValueAtTime(0.05, now);
+            osc.frequency.exponentialRampToValueAtTime(160, now + 0.14);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+            osc.start(now);
+            osc.stop(now + 0.15);
+          } else {
+            // Tap suave
+            osc.frequency.setValueAtTime(440, now);
+            gain.gain.setValueAtTime(0.03, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+            osc.start(now);
+            osc.stop(now + 0.05);
+          }
+
+          if (navigator.vibrate) {
+            navigator.vibrate(kind === "ok" ? [15, 30, 15] : kind === "err" ? 28 : 8);
+          }
+        } catch (e) {}
+      }
+
+      function popSticker(type, customObj) {
+        const stage = document.getElementById("stickerStage");
+        const pool = type === "ok" ? OK_STICKERS : ERR_STICKERS;
+        const item = customObj || pool[Math.floor(Math.random() * pool.length)];
+        const el = document.createElement("div");
+        el.className = "sticker-pop" + (type === "err" ? " err" : "");
+        el.innerHTML = `<span class="st-emoji">${item.emoji}</span><span class="st-label">${item.label}</span>`;
+        stage.innerHTML = "";
+        stage.appendChild(el);
+        setTimeout(() => {
+          if (stage.contains(el)) stage.removeChild(el);
+        }, 1150);
+      }
+
+      let toastTimer = null;
+      function showToast(msg) {
+        const toast = document.getElementById("quickToast");
+        if (toast) {
+          toast.textContent = msg;
+          toast.classList.add("show");
+          if (toastTimer) clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => {
+            toast.classList.remove("show");
+          }, 2400);
+        }
+        const tipEl = document.getElementById("gameTipFeedback");
+        if (tipEl) tipEl.textContent = msg;
+      }
+
+      function applyTheme() {
+        document.body.setAttribute("data-theme", state.theme || "almanaque");
+        document.getElementById("btnSound").textContent = state.sound ? "🔊" : "🔇";
+        document.getElementById("lobbyCoins").textContent = `🪙 ${state.coins}`;
+        document.getElementById("gameCoinsBadge").textContent = `🪙 ${state.coins}`;
+        const shopCoinsEl = document.getElementById("shopModalCoins");
+        if (shopCoinsEl) shopCoinsEl.textContent = `🪙 ${state.coins}`;
+        const bonusPerWord = getBonusRewardAmount();
+        const rewardTitle = document.getElementById("wsBonusRewardTitle");
+        if (rewardTitle) rewardTitle.textContent = `🌟 6 Palavras Bônus (+${bonusPerWord}🪙 cada)`;
+      }
+
+      function getBonusRewardAmount() {
+        return state.shop && state.shop.doubleBonus ? 40 : 25;
+      }
+
+      function renderAvatar(el, profile) {
+        if (!el) return;
+        el.classList.toggle("gold-frame", Boolean(state.shop && state.shop.goldFrame));
+        if (profile && profile.photo) {
+          el.innerHTML = `<img src="${profile.photo}" alt="${profile.name}" />`;
+        } else {
+          el.textContent = (profile && profile.icon) || "📖";
+        }
+      }
+
+      let tempAvatar = { icon: "📖", photo: null };
+
+      function openOnboarding(allowCancel) {
+        tempAvatar = {
+          icon: (state.profile && state.profile.icon) || "📖",
+          photo: (state.profile && state.profile.photo) || null
+        };
+        document.getElementById("onbName").value = (state.profile && state.profile.name) || "";
+        renderAvatar(document.getElementById("onbAvatarPreview"), tempAvatar);
+        document.getElementById("btnCancelProfile").classList.toggle("hidden", !allowCancel);
+
+        const availableIcons = state.shop && state.shop.extraIcons
+          ? [...BASE_ICONS, ...EXTRA_ICONS]
+          : BASE_ICONS;
+
+        const picker = document.getElementById("onbIconPicker");
+        picker.innerHTML = "";
+        availableIcons.forEach((em) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "icon-choice" + (!tempAvatar.photo && tempAvatar.icon === em ? " selected" : "");
+          btn.textContent = em;
+          btn.onclick = () => {
+            tempAvatar = { icon: em, photo: null };
+            renderAvatar(document.getElementById("onbAvatarPreview"), tempAvatar);
+            openOnboarding(allowCancel);
+          };
+          picker.appendChild(btn);
+        });
+
+        showView("viewOnboarding");
+      }
+
+      function compressPhoto(file, cb) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = 96;
+            canvas.height = 96;
+            const ctx = canvas.getContext("2d");
+            const minSide = Math.min(img.width, img.height);
+            ctx.drawImage(
+              img,
+              (img.width - minSide) / 2,
+              (img.height - minSide) / 2,
+              minSide,
+              minSide,
+              0,
+              0,
+              96,
+              96
+            );
+            cb(canvas.toDataURL("image/jpeg", 0.78));
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function showView(id) {
+        ["viewOnboarding", "viewLobby", "viewGame"].forEach((v) => {
+          document.getElementById(v).classList.toggle("hidden", v !== id);
+        });
+        const inGame = id === "viewGame";
+        document.getElementById("btnBackHome").classList.toggle("hidden", !inGame);
+        document.getElementById("btnStickerCheer").classList.toggle("hidden", !inGame);
+      }
+
+      function renderLobby() {
+        const p = state.profile || { name: "Leitor", icon: "📖", photo: null };
+        renderAvatar(document.getElementById("lobbyAvatar"), p);
+        document.getElementById("lobbyName").textContent = p.name;
+        const doneCount = Object.keys(state.completed || {}).length;
+        document.getElementById("lobbyStats").textContent = `${doneCount} fases concluídas`;
+        applyTheme();
+
+        document.querySelectorAll(".mode-btn").forEach((b) => {
+          b.classList.toggle("active", b.dataset.mode === currentMode);
+        });
+        document.querySelectorAll(".diff-btn").forEach((b) => {
+          b.classList.toggle("active", b.dataset.diff === currentDiff);
+        });
+
+        const catGrid = document.getElementById("catGrid");
+        catGrid.innerHTML = "";
+        CATEGORIES.forEach((cat) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "cat-btn" + (cat.id === currentCat ? " active" : "");
+          btn.innerHTML = `<span style="font-size:1.15rem">${cat.emoji}</span><span>${cat.label}</span>`;
+          btn.onclick = () => {
+            currentCat = cat.id;
+            renderLobby();
+          };
+          catGrid.appendChild(btn);
+        });
+
+        const catObj = CATEGORIES.find((c) => c.id === currentCat);
+        const modeName = currentMode === "ws" ? "Caça-Palavras" : "Palavras Cruzadas";
+        const diffLabels = { easy: "Fácil", medium: "Médio", hard: "Difícil", mage: "Mago" };
+        document.getElementById("levelsHeader").textContent = `${modeName} · ${catObj.label} (${diffLabels[currentDiff]})`;
+
+        const grid = document.getElementById("levelsGrid");
+        grid.innerHTML = "";
+        for (let lvl = 1; lvl <= 50; lvl++) {
+          const key = `${currentMode}_${currentCat}_${currentDiff}_${lvl}`;
+          const isDone = Boolean(state.completed && state.completed[key]);
+          const tile = document.createElement("button");
+          tile.type = "button";
+          tile.className = "lvl-tile" + (isDone ? " done" : "");
+          tile.textContent = isDone ? `✓${lvl}` : String(lvl);
+          tile.onclick = () => launchLevel(lvl);
+          grid.appendChild(tile);
+        }
+
+        showView("viewLobby");
+      }
+
+      /* =========================
+         WORD SEARCH GENERATOR
+      ========================= */
+      function buildWordSearch(catId, diff, level) {
+        const sizeMap = { easy: 10, medium: 11, hard: 13, mage: 15 };
+        const standardCountMap = { easy: 5, medium: 7, hard: 9, mage: 11 };
+        const size = sizeMap[diff] || 10;
+        const targetStandard = standardCountMap[diff] || 5;
+
+        const diffSalt = { easy: 11, medium: 29, hard: 53, mage: 97 }[diff] || 11;
+        const seed = (level * 97) + diffSalt + catId.charCodeAt(0) * 13;
+        const rng = mulberry32(seed);
+
+        const catObj = CATEGORIES.find((c) => c.id === catId) || CATEGORIES[0];
+        const pool = catObj.entries
+          .map(([w, clue]) => ({ word: normalizeWord(w), raw: w, clue }))
+          .filter((item) => item.word.length >= 3 && item.word.length <= size);
+
+        // Shuffle pool deterministically
+        const shuffled = [...pool];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(rng() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+
+        const dirsEasy = [[0, 1], [1, 0]];
+        const dirsMed = [[0, 1], [1, 0], [1, 1], [-1, 1]];
+        const dirsHard = [[0, 1], [1, 0], [1, 1], [-1, 1], [0, -1], [-1, 0], [-1, -1], [1, -1]];
+        const dirsMage = [
+          [-1, 0], [-1, 0], [1, 0], [1, 0],
+          [0, -1], [-1, -1], [1, -1], [0, 1], [1, 1], [-1, 1]
+        ];
+        const mainDirs =
+          diff === "easy" ? dirsEasy :
+          diff === "medium" ? dirsMed :
+          diff === "hard" ? dirsHard : dirsMage;
+
+        const bonusNormalDirs = [[0, 1], [1, 1], [-1, 1]];
+        const bonusVerticalBottomUpDirs = [[-1, 0], [1, 0], [-1, -1], [-1, 1]];
+
+        const grid = Array.from({ length: size }, () => Array(size).fill(""));
+        const standardWords = [];
+        const bonusWords = [];
+        let cursorIdx = 0;
+
+        function tryPlaceWithDirs(entry, dirList, listTarget, tag) {
+          const w = entry.word;
+          for (let attempt = 0; attempt < 140; attempt++) {
+            const [dr, dc] = dirList[Math.floor(rng() * dirList.length)];
+            const r0 = Math.floor(rng() * size);
+            const c0 = Math.floor(rng() * size);
+            const rEnd = r0 + dr * (w.length - 1);
+            const cEnd = c0 + dc * (w.length - 1);
+            if (rEnd < 0 || rEnd >= size || cEnd < 0 || cEnd >= size) continue;
+
+            let ok = true;
+            const cells = [];
+            for (let k = 0; k < w.length; k++) {
+              const rr = r0 + dr * k;
+              const cc = c0 + dc * k;
+              if (grid[rr][cc] !== "" && grid[rr][cc] !== w[k]) {
+                ok = false;
+                break;
+              }
+              cells.push({ r: rr, c: cc });
+            }
+            if (!ok) continue;
+
+            cells.forEach((pt, idx) => {
+              grid[pt.r][pt.c] = w[idx];
+            });
+            listTarget.push({ ...entry, cells, dir: [dr, dc], bonusTag: tag || null });
+            return true;
+          }
+          return false;
+        }
+
+        // 1. Place standard words
+        while (cursorIdx < shuffled.length && standardWords.length < targetStandard) {
+          tryPlaceWithDirs(shuffled[cursorIdx], mainDirs, standardWords, null);
+          cursorIdx++;
+        }
+
+        // 2. Place 3 hidden bonus words in standard directions
+        let bonusNormalPlaced = 0;
+        while (cursorIdx < shuffled.length && bonusNormalPlaced < 3) {
+          if (tryPlaceWithDirs(shuffled[cursorIdx], bonusNormalDirs, bonusWords, "Normal")) {
+            bonusNormalPlaced++;
+          }
+          cursorIdx++;
+        }
+
+        // 3. Place 3 hidden bonus words in vertical / bottom-to-top directions
+        let bonusVertPlaced = 0;
+        while (cursorIdx < shuffled.length && bonusVertPlaced < 3) {
+          if (tryPlaceWithDirs(shuffled[cursorIdx], bonusVerticalBottomUpDirs, bonusWords, "Vertical/Cima")) {
+            bonusVertPlaced++;
+          }
+          cursorIdx++;
+        }
+
+        const alphabet = "ABCDEFGHIJLMNOPQRSTUVXZ";
+        for (let r = 0; r < size; r++) {
+          for (let c = 0; c < size; c++) {
+            if (!grid[r][c]) {
+              grid[r][c] = alphabet[Math.floor(rng() * alphabet.length)];
+            }
+          }
+        }
+
+        return { size, grid, words: standardWords, bonusWords };
+      }
+
+      function startWordSearch(lvl) {
+        activeLevel = lvl;
+        wsData = buildWordSearch(currentCat, currentDiff, lvl);
+        wsFoundSet = new Set();
+        wsBonusFoundSet = new Set();
+        wsBonusListRevealed = false;
+        wsSelecting = false;
+        wsStartCell = null;
+        wsCurrentPath = [];
+        wsHintedCells = new Set();
+        wsBonusHintedCells = new Set();
+        wsTapStartCell = null;
+
+        const catObj = CATEGORIES.find((c) => c.id === currentCat);
+        const diffLabels = { easy: "Fácil", medium: "Médio", hard: "Difícil", mage: "Mago" };
+        document.getElementById("gameHeaderBadge").textContent =
+          `CAÇA-PALAVRAS #${String(lvl).padStart(2, "0")} · ${catObj.label} (${diffLabels[currentDiff]})`;
+        document.getElementById("wsContainer").classList.remove("hidden");
+        document.getElementById("cwContainer").classList.add("hidden");
+        document.getElementById("wsSidePanel").classList.remove("hidden");
+        document.getElementById("cwSidePanel").classList.add("hidden");
+
+        buildWsGridDom();
+        renderWsChipsAndBonus();
+        showView("viewGame");
+      }
+
+      function computeLineCells(r0, c0, r1, c1) {
+        const dr = r1 - r0;
+        const dc = c1 - c0;
+        const absR = Math.abs(dr);
+        const absC = Math.abs(dc);
+        if (dr !== 0 && dc !== 0 && absR !== absC) return [{ r: r0, c: c0 }];
+        const steps = Math.max(absR, absC);
+        const stepR = steps === 0 ? 0 : dr / steps;
+        const stepC = steps === 0 ? 0 : dc / steps;
+        const path = [];
+        for (let i = 0; i <= steps; i++) {
+          path.push({ r: r0 + stepR * i, c: c0 + stepC * i });
+        }
+        return path;
+      }
+
+      function buildWsGridDom() {
+        const { size, grid, words, bonusWords } = wsData;
+        const gridEl = document.getElementById("wsGrid");
+        gridEl.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        gridEl.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+        gridEl.innerHTML = "";
+        wsCellElements = Array.from({ length: size }, () => Array(size).fill(null));
+
+        for (let r = 0; r < size; r++) {
+          for (let c = 0; c < size; c++) {
+            const cell = document.createElement("div");
+            cell.className = "ws-cell";
+            cell.dataset.r = r;
+            cell.dataset.c = c;
+            cell.textContent = grid[r][c];
+
+            cell.ondblclick = (e) => {
+              e.stopPropagation();
+              const targetWord =
+                words.find((w) => !wsFoundSet.has(w.word) && w.cells[0].r === r && w.cells[0].c === c) ||
+                bonusWords.find((bw) => !wsBonusFoundSet.has(bw.word) && bw.cells[0].r === r && bw.cells[0].c === c);
+              if (targetWord) {
+                const dirLabel = describeDirection(targetWord.dir);
+                playSound("tap");
+                showToast(`🧭 Direção: ${dirLabel} (${targetWord.word.length} letras)`);
+              }
+            };
+
+            gridEl.appendChild(cell);
+            wsCellElements[r][c] = cell;
+          }
+        }
+
+        updateWsGridVisuals();
+      }
+
+      function updateWsGridVisuals() {
+        if (!wsData || !wsCellElements.length) return;
+        const { size, words, bonusWords } = wsData;
+
+        const foundCoords = new Set();
+        words.forEach((w) => {
+          if (wsFoundSet.has(w.word)) {
+            w.cells.forEach((pt) => foundCoords.add(`${pt.r},${pt.c}`));
+          }
+        });
+
+        const bonusCoords = new Set();
+        bonusWords.forEach((bw) => {
+          if (wsBonusFoundSet.has(bw.word)) {
+            bw.cells.forEach((pt) => bonusCoords.add(`${pt.r},${pt.c}`));
+          }
+        });
+
+        const selCoords = new Set(wsCurrentPath.map((pt) => `${pt.r},${pt.c}`));
+
+        for (let r = 0; r < size; r++) {
+          for (let c = 0; c < size; c++) {
+            const cell = wsCellElements[r][c];
+            if (!cell) continue;
+            const key = `${r},${c}`;
+            cell.classList.toggle("found", foundCoords.has(key));
+            cell.classList.toggle("bonus-found", bonusCoords.has(key));
+            cell.classList.toggle("selecting", selCoords.has(key));
+            cell.classList.toggle("hinted", wsHintedCells.has(key));
+            cell.classList.toggle("bonus-hinted", wsBonusHintedCells.has(key));
+            cell.classList.toggle("tap-start", Boolean(wsTapStartCell && wsTapStartCell.r === r && wsTapStartCell.c === c));
+          }
+        }
+      }
+
+      function renderWsChipsAndBonus() {
+        const { words, bonusWords } = wsData;
+        const chipsEl = document.getElementById("wsWordChips");
+        chipsEl.innerHTML = "";
+        words.forEach((w) => {
+          const chip = document.createElement("span");
+          const isFound = wsFoundSet.has(w.word);
+          chip.className = "word-chip" + (isFound ? " found" : "");
+          chip.textContent = w.raw;
+          chip.title = w.clue;
+          chip.onclick = () => {
+            playSound("tap");
+            showToast(`📖 "${w.raw}": ${w.clue} (${w.word.length} letras)`);
+          };
+          chipsEl.appendChild(chip);
+        });
+
+        const totalBonus = bonusWords.length;
+        document.getElementById("wsBonusCounter").textContent = `${wsBonusFoundSet.size}/${totalBonus}`;
+        const btnRevealList = document.getElementById("btnRevealBonusList");
+        if (btnRevealList) {
+          btnRevealList.textContent = wsBonusListRevealed
+            ? "👁️ Lista Aberta"
+            : "👁️ Ver Lista (30🪙)";
+          btnRevealList.disabled = wsBonusListRevealed;
+        }
+
+        const slotsEl = document.getElementById("wsBonusSlots");
+        slotsEl.innerHTML = "";
+        bonusWords.forEach((bw, idx) => {
+          const slot = document.createElement("div");
+          const isFound = wsBonusFoundSet.has(bw.word);
+          slot.className = "bonus-slot" + (isFound ? " revealed" : wsBonusListRevealed ? " peeked" : "");
+          if (isFound) {
+            slot.textContent = `★ ${bw.raw}`;
+          } else if (wsBonusListRevealed) {
+            slot.textContent = `👁️ ${bw.raw}`;
+          } else {
+            slot.textContent = `??? (${bw.word.length}L)`;
+          }
+          slot.title = (isFound || wsBonusListRevealed)
+            ? `${bw.clue} (${bw.bonusTag})`
+            : `Bônus #${idx + 1} (${bw.bonusTag})`;
+          slot.onclick = () => {
+            if (isFound || wsBonusListRevealed) {
+              playSound("tap");
+              showToast(`🌟 Bônus "${bw.raw}": ${bw.clue} (${bw.word.length}L)`);
+            }
+          };
+          slotsEl.appendChild(slot);
+        });
+
+        document.getElementById("gameProgressLabel").textContent =
+          `Padrões: ${wsFoundSet.size}/${words.length} · Bônus: ${wsBonusFoundSet.size}/${totalBonus}`;
+      }
+
+      function describeDirection(dir) {
+        const [dr, dc] = dir;
+        if (dr === 0 && dc === 1) return "Horizontal →";
+        if (dr === 0 && dc === -1) return "Horizontal Invertida ←";
+        if (dr === 1 && dc === 0) return "Vertical ↓";
+        if (dr === -1 && dc === 0) return "Vertical de Baixo para Cima ↑";
+        if (dr === 1 && dc === 1) return "Diagonal Inferior ↘";
+        if (dr === -1 && dc === 1) return "Diagonal Superior ↗";
+        if (dr === -1 && dc === -1) return "Diagonal Invertida Superior ↖";
+        if (dr === 1 && dc === -1) return "Diagonal Invertida Inferior ↙";
+        return "Linha Reta";
+      }
+
+      function buyRevealHiddenBonusList() {
+        if (currentMode !== "ws" || !wsData) return false;
+        if (wsBonusListRevealed) {
+          showToast("👁️ A lista das 6 palavras escondidas já está revelada nesta fase!");
+          return false;
+        }
+        if (!spendCoins(30)) return false;
+        wsBonusListRevealed = true;
+        playSound("ok");
+        popSticker("ok", { emoji: "👁️", label: "6 Escondidas Reveladas!" });
+        showToast("👁️ Lista desbloqueada! Veja os nomes nos slots dourados e caçe-os.");
+        renderWsChipsAndBonus();
+        return true;
+      }
+
+      function buyRadarBonusWord() {
+        if (currentMode !== "ws" || !wsData) return false;
+        const pendingBonus = wsData.bonusWords.find((bw) => !wsBonusFoundSet.has(bw.word));
+        if (!pendingBonus) {
+          showToast("🌟 Todas as 6 palavras bônus desta fase já foram encontradas!");
+          return false;
+        }
+        if (!spendCoins(15)) return false;
+        const first = pendingBonus.cells[0];
+        wsBonusHintedCells.add(`${first.r},${first.c}`);
+        const dirText = describeDirection(pendingBonus.dir);
+        playSound("ok");
+        popSticker("ok", { emoji: "🧭", label: "Radar Bônus Ativo!" });
+        showToast(`🧭 Radar: 1ª letra iluminada em dourado! Sentido: ${dirText}`);
+        updateWsGridVisuals();
+        return true;
+      }
+
+      function finalizeWsSelection() {
+        if (!wsCurrentPath || !wsCurrentPath.length) {
+          wsSelecting = false;
+          wsCurrentPath = [];
+          updateWsGridVisuals();
+          return;
+        }
+        const selectedStr = wsCurrentPath.map((pt) => wsData.grid[pt.r][pt.c]).join("");
+        const reversedStr = selectedStr.split("").reverse().join("");
+
+        const matchedStandard = wsData.words.find(
+          (w) => !wsFoundSet.has(w.word) && (w.word === selectedStr || w.word === reversedStr)
+        );
+
+        const matchedBonus = !matchedStandard
+          ? wsData.bonusWords.find(
+              (bw) => !wsBonusFoundSet.has(bw.word) && (bw.word === selectedStr || bw.word === reversedStr)
+            )
+          : null;
+
+        if (matchedStandard) {
+          wsFoundSet.add(matchedStandard.word);
+          playSound("ok");
+          popSticker("ok");
+          showToast(`"${matchedStandard.raw}" encontrada! (${matchedStandard.clue})`);
+          renderWsChipsAndBonus();
+        } else if (matchedBonus) {
+          wsBonusFoundSet.add(matchedBonus.word);
+          const bonusGain = getBonusRewardAmount();
+          state.coins += bonusGain;
+          saveState();
+          applyTheme();
+          playSound("ok");
+          popSticker("ok", { emoji: "🌟", label: `Bônus "${matchedBonus.raw}" +${bonusGain}🪙!` });
+          showToast(`🌟 Bônus encontrado: "${matchedBonus.raw}" (+${bonusGain}🪙)`);
+          renderWsChipsAndBonus();
+        } else if (wsCurrentPath.length >= 2) {
+          playSound("err");
+          popSticker("err");
+        }
+
+        wsSelecting = false;
+        wsStartCell = null;
+        wsCurrentPath = [];
+        updateWsGridVisuals();
+
+        if (wsFoundSet.size === wsData.words.length) {
+          completeCurrentLevel();
+        }
+      }
+
+      const wsGridEl = document.getElementById("wsGrid");
+      let pointerStartPos = null;
+      let isPointerDragging = false;
+
+      wsGridEl.addEventListener("pointerdown", (e) => {
+        const target = document.elementFromPoint(e.clientX, e.clientY);
+        if (!target || !target.classList.contains("ws-cell")) return;
+        if (wsGridEl.setPointerCapture) {
+          try { wsGridEl.setPointerCapture(e.pointerId); } catch (err) {}
+        }
+        const r = Number(target.dataset.r);
+        const c = Number(target.dataset.c);
+        pointerStartPos = { x: e.clientX, y: e.clientY, r, c };
+        isPointerDragging = false;
+        wsSelecting = true;
+        wsStartCell = { r, c };
+        wsCurrentPath = [wsStartCell];
+        updateWsGridVisuals();
+      });
+
+      wsGridEl.addEventListener("pointermove", (e) => {
+        if (!wsSelecting || !wsStartCell || !pointerStartPos) return;
+        const dx = e.clientX - pointerStartPos.x;
+        const dy = e.clientY - pointerStartPos.y;
+        if (!isPointerDragging && Math.hypot(dx, dy) > 8) {
+          isPointerDragging = true;
+          wsTapStartCell = null;
+        }
+        if (isPointerDragging) {
+          const target = document.elementFromPoint(e.clientX, e.clientY);
+          if (!target || !target.classList.contains("ws-cell")) return;
+          const r1 = Number(target.dataset.r);
+          const c1 = Number(target.dataset.c);
+          wsCurrentPath = computeLineCells(wsStartCell.r, wsStartCell.c, r1, c1);
+          updateWsGridVisuals();
+        }
+      });
+
+      function handlePointerUpOrCancel(e) {
+        if (!wsSelecting) return;
+        if (wsGridEl.releasePointerCapture && e.pointerId) {
+          try { wsGridEl.releasePointerCapture(e.pointerId); } catch (err) {}
+        }
+
+        if (isPointerDragging) {
+          finalizeWsSelection();
+        } else if (pointerStartPos) {
+          // Clique / Toque individual -> Seleção de 2 toques (início e fim)
+          const { r, c } = pointerStartPos;
+          if (!wsTapStartCell) {
+            wsTapStartCell = { r, c };
+            wsCurrentPath = [{ r, c }];
+            playSound("tap");
+            showToast(`Letra [${wsData.grid[r][c]}] marcada! Toque na letra final para selecionar.`);
+            updateWsGridVisuals();
+          } else if (wsTapStartCell.r === r && wsTapStartCell.c === c) {
+            // Toque repetido na mesma letra -> cancela
+            wsTapStartCell = null;
+            wsCurrentPath = [];
+            updateWsGridVisuals();
+          } else {
+            // Segundo toque -> verifica se forma linha reta ou diagonal
+            const dr = r - wsTapStartCell.r;
+            const dc = c - wsTapStartCell.c;
+            if (dr === 0 || dc === 0 || Math.abs(dr) === Math.abs(dc)) {
+              wsCurrentPath = computeLineCells(wsTapStartCell.r, wsTapStartCell.c, r, c);
+              wsTapStartCell = null;
+              finalizeWsSelection();
+            } else {
+              // Não colinear -> redefine início
+              wsTapStartCell = { r, c };
+              wsCurrentPath = [{ r, c }];
+              playSound("tap");
+              showToast(`Nova letra inicial [${wsData.grid[r][c]}] marcada.`);
+              updateWsGridVisuals();
+            }
+          }
+        }
+
+        wsSelecting = false;
+        pointerStartPos = null;
+        isPointerDragging = false;
+      }
+
+      window.addEventListener("pointerup", handlePointerUpOrCancel);
+      window.addEventListener("pointercancel", handlePointerUpOrCancel);
+
+      /* =========================
+         CROSSWORD GENERATOR
+      ========================= */
+      function buildCrossword(catId, diff, level) {
+        const sizeMap = { easy: 8, medium: 10, hard: 11, mage: 13 };
+        const maxWordsMap = { easy: 5, medium: 7, hard: 9, mage: 11 };
+        const size = sizeMap[diff] || 8;
+        const maxWords = maxWordsMap[diff] || 5;
+        const diffSalt = { easy: 7, medium: 41, hard: 83, mage: 127 }[diff] || 7;
+
+        const catObj = CATEGORIES.find((c) => c.id === catId) || CATEGORIES[0];
+        const pool = catObj.entries
+          .map(([w, clue]) => ({ word: normalizeWord(w), raw: w, clue }))
+          .filter((item) => item.word.length >= 3 && item.word.length <= size - 1);
+
+        const minDesiredWords = Math.min(3, maxWords, pool.length);
+        let bestGrid = null;
+        let bestPlaced = [];
+
+        // Tentativas para garantir o melhor encaixe e palavras conectadas
+        for (let attempt = 0; attempt < 12; attempt++) {
+          const seed = (level * 131) + diffSalt + catId.charCodeAt(0) * 19 + attempt * 73;
+          const rng = mulberry32(seed);
+
+          const shuffled = [...pool];
+          for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(rng() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          }
+
+          const grid = Array.from({ length: size }, () => Array(size).fill(null));
+          const placed = [];
+
+          function canPlace(word, r, c, dir) {
+            const dr = dir === "V" ? 1 : 0;
+            const dc = dir === "H" ? 1 : 0;
+            if (r < 0 || c < 0 || r + dr * (word.length - 1) >= size || c + dc * (word.length - 1) >= size) {
+              return false;
+            }
+            const rPrev = r - dr;
+            const cPrev = c - dc;
+            if (rPrev >= 0 && cPrev >= 0 && grid[rPrev][cPrev] !== null) return false;
+            const rNext = r + dr * word.length;
+            const cNext = c + dc * word.length;
+            if (rNext < size && cNext < size && grid[rNext][cNext] !== null) return false;
+
+            let intersections = 0;
+            for (let k = 0; k < word.length; k++) {
+              const rr = r + dr * k;
+              const cc = c + dc * k;
+              const existing = grid[rr][cc];
+              if (existing !== null) {
+                if (existing !== word[k]) return false;
+                intersections++;
+              } else {
+                if (dir === "H") {
+                  if ((rr > 0 && grid[rr - 1][cc] !== null) || (rr + 1 < size && grid[rr + 1][cc] !== null)) {
+                    return false;
+                  }
+                } else {
+                  if ((cc > 0 && grid[rr][cc - 1] !== null) || (cc + 1 < size && grid[rr][cc + 1] !== null)) {
+                    return false;
+                  }
+                }
+              }
+            }
+            return placed.length === 0 ? true : intersections >= 1;
+          }
+
+          function doPlace(entry, r, c, dir) {
+            const dr = dir === "V" ? 1 : 0;
+            const dc = dir === "H" ? 1 : 0;
+            const cells = [];
+            for (let k = 0; k < entry.word.length; k++) {
+              const rr = r + dr * k;
+              const cc = c + dc * k;
+              grid[rr][cc] = entry.word[k];
+              cells.push({ r: rr, c: cc });
+            }
+            placed.push({ ...entry, r, c, dir, cells });
+          }
+
+          if (shuffled.length > 0) {
+            const first = shuffled[0];
+            const startR = Math.floor(size / 2);
+            const startC = Math.max(0, Math.floor((size - first.word.length) / 2));
+            doPlace(first, startR, startC, "H");
+          }
+
+          for (let idx = 1; idx < shuffled.length && placed.length < maxWords; idx++) {
+            const cand = shuffled[idx];
+            let placedFlag = false;
+            for (const existing of placed) {
+              const nextDir = existing.dir === "H" ? "V" : "H";
+              for (let i = 0; i < existing.word.length && !placedFlag; i++) {
+                for (let j = 0; j < cand.word.length && !placedFlag; j++) {
+                  if (existing.word[i] === cand.word[j]) {
+                    const interCell = existing.cells[i];
+                    const r0 = nextDir === "V" ? interCell.r - j : interCell.r;
+                    const c0 = nextDir === "H" ? interCell.c - j : interCell.c;
+                    if (canPlace(cand.word, r0, c0, nextDir)) {
+                      doPlace(cand, r0, c0, nextDir);
+                      placedFlag = true;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          if (placed.length > bestPlaced.length) {
+            bestPlaced = placed;
+            bestGrid = grid;
+          }
+
+          if (placed.length >= minDesiredWords) {
+            break;
+          }
+        }
+
+        let numCounter = 1;
+        const numMap = {};
+        for (let r = 0; r < size; r++) {
+          for (let c = 0; c < size; c++) {
+            const starting = bestPlaced.filter((w) => w.r === r && w.c === c);
+            if (starting.length > 0) {
+              numMap[`${r},${c}`] = numCounter;
+              starting.forEach((w) => (w.num = numCounter));
+              numCounter++;
+            }
+          }
+        }
+
+        return { size, solutionGrid: bestGrid, words: bestPlaced, numMap };
+      }
+
+      function startCrossword(lvl) {
+        activeLevel = lvl;
+        cwData = buildCrossword(currentCat, currentDiff, lvl);
+        cwUserGrid = Array.from({ length: cwData.size }, () => Array(cwData.size).fill(""));
+        cwActiveWordIdx = 0;
+        cwWrongCells = new Set();
+
+        if (cwData.words.length > 0) {
+          cwCursor = { ...cwData.words[0].cells[0] };
+          cwDirection = cwData.words[0].dir;
+        }
+
+        const catObj = CATEGORIES.find((c) => c.id === currentCat);
+        const diffLabels = { easy: "Fácil", medium: "Médio", hard: "Difícil", mage: "Mago" };
+        document.getElementById("gameHeaderBadge").textContent =
+          `CRUZADAS #${String(lvl).padStart(2, "0")} · ${catObj.label} (${diffLabels[currentDiff]})`;
+        document.getElementById("wsContainer").classList.add("hidden");
+        document.getElementById("cwContainer").classList.remove("hidden");
+        document.getElementById("wsSidePanel").classList.add("hidden");
+        document.getElementById("cwSidePanel").classList.remove("hidden");
+
+        buildVirtualKeyboard();
+        renderCrossword();
+        showView("viewGame");
+      }
+
+      function buildVirtualKeyboard() {
+        const kb = document.getElementById("vKeyboard");
+        kb.innerHTML = "";
+        const rows = [
+          ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+          ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ç"],
+          ["↔", "Z", "X", "C", "V", "B", "N", "M", "⌫"]
+        ];
+        rows.forEach((rLetters) => {
+          const rowEl = document.createElement("div");
+          rowEl.className = "kb-row";
+          rLetters.forEach((ch) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "kb-key" + (ch === "⌫" ? " wide action-key" : ch === "↔" ? " action-key" : "");
+            btn.textContent = ch;
+            btn.setAttribute("aria-label", ch === "⌫" ? "Apagar" : ch === "↔" ? "Mudar Direção" : ch);
+            btn.onclick = (e) => {
+              e.preventDefault();
+              if (ch === "↔") {
+                document.getElementById("btnToggleDir").click();
+              } else {
+                handleCrosswordInput(ch);
+              }
+            };
+            rowEl.appendChild(btn);
+          });
+          kb.appendChild(rowEl);
+        });
+      }
+
+      function isCwWordSolved(w) {
+        return w.cells.every((pt, idx) => cwUserGrid[pt.r][pt.c] === w.word[idx]);
+      }
+
+      function handleCrosswordInput(key) {
+        if (!cwData || !cwData.words.length) return;
+        const activeW = cwData.words[cwActiveWordIdx];
+        const { r, c } = cwCursor;
+
+        if (key === "⌫" || key === "BACKSPACE") {
+          const idxInWord = activeW.cells.findIndex((pt) => pt.r === r && pt.c === c);
+          if (cwUserGrid[r][c] !== "") {
+            cwUserGrid[r][c] = "";
+            cwWrongCells.delete(`${r},${c}`);
+            playSound("tap");
+          } else if (idxInWord > 0) {
+            const prevPt = activeW.cells[idxInWord - 1];
+            cwCursor = { ...prevPt };
+            cwUserGrid[prevPt.r][prevPt.c] = "";
+            cwWrongCells.delete(`${prevPt.r},${prevPt.c}`);
+            playSound("tap");
+          }
+          renderCrossword();
+          return;
+        }
+
+        const letter = normalizeWord(key);
+        if (!letter) return;
+
+        cwUserGrid[r][c] = letter[0];
+        const expected = cwData.solutionGrid[r][c];
+        if (letter[0] === expected) {
+          cwWrongCells.delete(`${r},${c}`);
+          playSound("tap");
+        } else {
+          cwWrongCells.add(`${r},${c}`);
+          playSound("err");
+          popSticker("err");
+        }
+
+        const idxInWord = activeW.cells.findIndex((pt) => pt.r === r && pt.c === c);
+        // Avanço inteligente: pula para a próxima célula ainda vazia ou incorreta
+        let nextIdx = -1;
+        for (let step = 1; step < activeW.cells.length; step++) {
+          const targetIdx = idxInWord + step;
+          if (targetIdx < activeW.cells.length) {
+            const pt = activeW.cells[targetIdx];
+            if (!cwUserGrid[pt.r][pt.c] || cwUserGrid[pt.r][pt.c] !== activeW.word[targetIdx]) {
+              nextIdx = targetIdx;
+              break;
+            }
+          }
+        }
+
+        if (nextIdx !== -1) {
+          cwCursor = { ...activeW.cells[nextIdx] };
+        } else if (idxInWord + 1 < activeW.cells.length) {
+          cwCursor = { ...activeW.cells[idxInWord + 1] };
+        }
+
+        if (isCwWordSolved(activeW)) {
+          playSound("ok");
+          popSticker("ok");
+          showToast(`"${activeW.raw}" resolvida!`);
+        }
+
+        renderCrossword();
+
+        const allSolved = cwData.words.every(isCwWordSolved);
+        if (allSolved) {
+          completeCurrentLevel();
+        }
+      }
+
+      function moveCwCursor(dr, dc) {
+        if (!cwData) return;
+        const newR = cwCursor.r + dr;
+        const newC = cwCursor.c + dc;
+        if (newR >= 0 && newR < cwData.size && newC >= 0 && newC < cwData.size && cwData.solutionGrid[newR][newC] !== null) {
+          const matchingWords = cwData.words
+            .map((w, idx) => ({ w, idx }))
+            .filter((item) => item.w.cells.some((pt) => pt.r === newR && pt.c === newC));
+          if (matchingWords.length > 0) {
+            const sameDir = matchingWords.find((m) => m.w.dir === cwDirection) || matchingWords[0];
+            cwActiveWordIdx = sameDir.idx;
+            cwDirection = sameDir.w.dir;
+          }
+          cwCursor = { r: newR, c: newC };
+          renderCrossword();
+        }
+      }
+
+      function renderCrossword() {
+        const { size, solutionGrid, words, numMap } = cwData;
+        const gridEl = document.getElementById("cwGrid");
+        gridEl.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        gridEl.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+        gridEl.innerHTML = "";
+
+        const activeW = words[cwActiveWordIdx];
+        const activeCellSet = new Set(activeW ? activeW.cells.map((pt) => `${pt.r},${pt.c}`) : []);
+
+        for (let r = 0; r < size; r++) {
+          for (let c = 0; c < size; c++) {
+            const cell = document.createElement("div");
+            const key = `${r},${c}`;
+            if (solutionGrid[r][c] === null) {
+              cell.className = "cw-cell block";
+              gridEl.appendChild(cell);
+              continue;
+            }
+
+            cell.className = "cw-cell";
+            if (activeCellSet.has(key)) cell.classList.add("in-word");
+            if (cwCursor.r === r && cwCursor.c === c) cell.classList.add("cursor");
+            if (cwWrongCells.has(key)) cell.classList.add("wrong");
+            if (cwUserGrid[r][c] && cwUserGrid[r][c] === solutionGrid[r][c]) {
+              cell.classList.add("correct-lock");
+            }
+
+            if (numMap[key]) {
+              const numEl = document.createElement("span");
+              numEl.className = "cw-num";
+              numEl.textContent = numMap[key];
+              cell.appendChild(numEl);
+            }
+
+            const letterSpan = document.createElement("span");
+            letterSpan.textContent = cwUserGrid[r][c] || "";
+            cell.appendChild(letterSpan);
+
+            cell.onclick = () => {
+              const matchingWords = words
+                .map((w, idx) => ({ w, idx }))
+                .filter((item) => item.w.cells.some((pt) => pt.r === r && pt.c === c));
+
+              if (cwCursor.r === r && cwCursor.c === c && matchingWords.length > 1) {
+                const other = matchingWords.find((m) => m.idx !== cwActiveWordIdx);
+                if (other) {
+                  cwActiveWordIdx = other.idx;
+                  cwDirection = other.w.dir;
+                }
+              } else if (matchingWords.length > 0) {
+                const sameDir = matchingWords.find((m) => m.w.dir === cwDirection) || matchingWords[0];
+                cwActiveWordIdx = sameDir.idx;
+                cwDirection = sameDir.w.dir;
+              }
+              cwCursor = { r, c };
+              renderCrossword();
+            };
+
+            gridEl.appendChild(cell);
+          }
+        }
+
+        if (activeW) {
+          document.getElementById("cwActiveDir").textContent =
+            `${activeW.num}. ${activeW.dir === "H" ? "HORIZONTAL →" : "VERTICAL ↓"} (${activeW.word.length} letras)`;
+          document.getElementById("cwActiveClueText").textContent = activeW.clue;
+        }
+
+        const listEl = document.getElementById("cwCluesList");
+        listEl.innerHTML = "";
+        words.forEach((w, idx) => {
+          const li = document.createElement("li");
+          li.className = (idx === cwActiveWordIdx ? "active-clue " : "") + (isCwWordSolved(w) ? "solved-clue" : "");
+          li.textContent = `${w.num}${w.dir === "H" ? "H" : "V"} — ${w.clue}`;
+          li.onclick = () => {
+            cwActiveWordIdx = idx;
+            cwDirection = w.dir;
+            cwCursor = { ...w.cells[0] };
+            renderCrossword();
+          };
+          listEl.appendChild(li);
+        });
+
+        // Mantém a pista ativa visível na rolagem
+        const activeLi = listEl.querySelector("li.active-clue");
+        if (activeLi) {
+          activeLi.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        }
+
+        const solvedWordsCount = words.filter(isCwWordSolved).length;
+        document.getElementById("gameProgressLabel").textContent = `${solvedWordsCount}/${words.length} palavras`;
+      }
+
+      /* =========================
+         HINTS & LEVEL COMPLETION
+      ========================= */
+      function spendCoins(cost) {
+        if (state.coins < cost) {
+          showToast(`Moedas insuficientes (${cost}🪙 necessárias). Encontre palavras bônus!`);
+          playSound("err");
+          return false;
+        }
+        state.coins -= cost;
+        saveState();
+        applyTheme();
+        return true;
+      }
+
+      document.getElementById("btnHintSubtle").onclick = () => {
+        playSound("tap");
+        if (currentMode === "ws") {
+          const pending = wsData.words.find((w) => !wsFoundSet.has(w.word));
+          if (!pending) {
+            showToast("Todas as palavras padrões desta fase já foram encontradas!");
+            return;
+          }
+          if (!spendCoins(10)) return;
+          const first = pending.cells[0];
+          const half = first.r < wsData.size / 2 ? "metade superior" : "metade inferior";
+          showToast(`🔍 Dica: "${pending.raw}" começa na ${half} (${pending.clue}).`);
+        } else {
+          let targetW = cwData.words[cwActiveWordIdx];
+          if (isCwWordSolved(targetW)) {
+            targetW = cwData.words.find((w) => !isCwWordSolved(w));
+          }
+          if (!targetW) {
+            showToast("Todas as palavras das cruzadas já foram preenchidas!");
+            return;
+          }
+          if (!spendCoins(10)) return;
+          showToast(`🔍 Dica: ${targetW.num}${targetW.dir} começa com "${targetW.word[0]}" e termina com "${targetW.word[targetW.word.length - 1]}".`);
+        }
+      };
+
+      document.getElementById("btnHintLetter").onclick = () => {
+        if (currentMode === "ws") {
+          const pending = wsData.words.find((w) => !wsFoundSet.has(w.word));
+          if (!pending) {
+            showToast("Todas as palavras padrões desta fase já foram encontradas!");
+            return;
+          }
+          if (!spendCoins(20)) return;
+          playSound("ok");
+          const first = pending.cells[0];
+          wsHintedCells.add(`${first.r},${first.c}`);
+          showToast(`✨ 1ª letra de "${pending.raw}" iluminada na grade!`);
+          updateWsGridVisuals();
+        } else {
+          let targetW = cwData.words[cwActiveWordIdx];
+          let emptyIdx = targetW ? targetW.cells.findIndex((pt, idx) => cwUserGrid[pt.r][pt.c] !== targetW.word[idx]) : -1;
+          if (emptyIdx === -1) {
+            targetW = cwData.words.find((w) => !isCwWordSolved(w));
+            if (targetW) {
+              emptyIdx = targetW.cells.findIndex((pt, idx) => cwUserGrid[pt.r][pt.c] !== targetW.word[idx]);
+              cwActiveWordIdx = cwData.words.indexOf(targetW);
+              cwDirection = targetW.dir;
+            }
+          }
+          if (!targetW || emptyIdx === -1) {
+            showToast("Todas as palavras das cruzadas já foram preenchidas!");
+            return;
+          }
+          if (!spendCoins(20)) return;
+          playSound("ok");
+          const pt = targetW.cells[emptyIdx];
+          cwUserGrid[pt.r][pt.c] = targetW.word[emptyIdx];
+          cwWrongCells.delete(`${pt.r},${pt.c}`);
+          cwCursor = { ...pt };
+          showToast(`✨ Letra '${targetW.word[emptyIdx]}' preenchida em ${targetW.num}${targetW.dir}!`);
+          renderCrossword();
+          if (cwData.words.every(isCwWordSolved)) completeCurrentLevel();
+        }
+      };
+
+      document.getElementById("btnHintWord").onclick = () => {
+        if (currentMode === "ws") {
+          const pending = wsData.words.find((w) => !wsFoundSet.has(w.word));
+          if (!pending) {
+            showToast("Todas as palavras padrões desta fase já foram encontradas!");
+            return;
+          }
+          if (!spendCoins(35)) return;
+          playSound("ok");
+          popSticker("ok");
+          wsFoundSet.add(pending.word);
+          showToast(`🎯 Palavra "${pending.raw}" revelada!`);
+          updateWsGridVisuals();
+          renderWsChipsAndBonus();
+          if (wsFoundSet.size === wsData.words.length) completeCurrentLevel();
+        } else {
+          let targetW = cwData.words[cwActiveWordIdx];
+          if (isCwWordSolved(targetW)) {
+            targetW = cwData.words.find((w) => !isCwWordSolved(w));
+            if (targetW) {
+              cwActiveWordIdx = cwData.words.indexOf(targetW);
+              cwDirection = targetW.dir;
+            }
+          }
+          if (!targetW) {
+            showToast("Todas as palavras das cruzadas já foram preenchidas!");
+            return;
+          }
+          if (!spendCoins(35)) return;
+          playSound("ok");
+          popSticker("ok");
+          targetW.cells.forEach((pt, idx) => {
+            cwUserGrid[pt.r][pt.c] = targetW.word[idx];
+            cwWrongCells.delete(`${pt.r},${pt.c}`);
+          });
+          showToast(`🎯 Palavra "${targetW.raw}" completada!`);
+          renderCrossword();
+          if (cwData.words.every(isCwWordSolved)) completeCurrentLevel();
+        }
+      };
+
+      function completeCurrentLevel() {
+        const key = `${currentMode}_${currentCat}_${currentDiff}_${activeLevel}`;
+        state.completed = state.completed || {};
+        const firstTime = !state.completed[key];
+        state.completed[key] = true;
+        const reward = firstTime ? 20 : 5;
+        state.coins += reward;
+        saveState();
+        applyTheme();
+
+        playSound("win");
+        popSticker("ok", { emoji: "🏆", label: "Fase Concluída!" });
+
+        const bonusInfo =
+          currentMode === "ws"
+            ? ` (${wsBonusFoundSet.size}/${wsData.bonusWords.length} palavras bônus descobertas)`
+            : "";
+        document.getElementById("winTitle").textContent = `Fase #${String(activeLevel).padStart(2, "0")} Concluída!`;
+        document.getElementById("winDesc").textContent = `Você ganhou +${reward}🪙 de recompensa${bonusInfo}!`;
+        document.getElementById("winModal").classList.remove("hidden");
+      }
+
+      function launchLevel(lvl) {
+        if (currentMode === "ws") startWordSearch(lvl);
+        else startCrossword(lvl);
+      }
+
+      /* =========================
+         NAVIGATION & EVENTS
+      ========================= */
+      document.getElementById("btnSaveProfile").onclick = () => {
+        const name = document.getElementById("onbName").value.trim() || "Leitor";
+        state.profile = {
+          name,
+          icon: tempAvatar.icon || "📖",
+          photo: tempAvatar.photo || null
+        };
+        saveState();
+        playSound("ok");
+        renderLobby();
+      };
+
+      document.getElementById("btnQuickPlay").onclick = () => {
+        state.profile = {
+          name: "Jogador",
+          icon: "📖",
+          photo: null
+        };
+        saveState();
+        playSound("ok");
+        renderLobby();
+      };
+
+      document.getElementById("btnCancelProfile").onclick = () => {
+        if (state.profile) renderLobby();
+      };
+
+      document.getElementById("btnProfile").onclick = () => openOnboarding(Boolean(state.profile));
+      document.getElementById("btnTakePhoto").onclick = () => document.getElementById("inputCamera").click();
+      document.getElementById("btnPickGallery").onclick = () => document.getElementById("inputGallery").click();
+
+      document.getElementById("inputCamera").onchange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+          compressPhoto(e.target.files[0], (url) => {
+            tempAvatar.photo = url;
+            renderAvatar(document.getElementById("onbAvatarPreview"), tempAvatar);
+          });
+        }
+      };
+
+      document.getElementById("inputGallery").onchange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+          compressPhoto(e.target.files[0], (url) => {
+            tempAvatar.photo = url;
+            renderAvatar(document.getElementById("onbAvatarPreview"), tempAvatar);
+          });
+        }
+      };
+
+      document.getElementById("btnTheme").onclick = () => {
+        const unlocked = (state.shop && state.shop.unlockedThemes) || ["almanaque", "moleskine"];
+        const idx = unlocked.indexOf(state.theme);
+        state.theme = unlocked[(idx + 1) % unlocked.length];
+        saveState();
+        applyTheme();
+        showToast(`Tema visual alterado para: ${state.theme.toUpperCase()}`);
+      };
+
+      /* =========================
+         HELP MODAL
+      ========================= */
+      function openHelpModal(tab) {
+        const activeTab = tab || (currentMode === "cw" ? "cw" : "ws");
+        switchHelpTab(activeTab);
+        document.getElementById("helpModal").classList.remove("hidden");
+      }
+
+      function switchHelpTab(tab) {
+        document.getElementById("tabHelpWS").classList.toggle("active", tab === "ws");
+        document.getElementById("tabHelpCW").classList.toggle("active", tab === "cw");
+        document.getElementById("tabHelpTips").classList.toggle("active", tab === "tips");
+
+        document.getElementById("helpContentWS").classList.toggle("hidden", tab !== "ws");
+        document.getElementById("helpContentCW").classList.toggle("hidden", tab !== "cw");
+        document.getElementById("helpContentTips").classList.toggle("hidden", tab !== "tips");
+      }
+
+      document.getElementById("btnHelp").onclick = () => openHelpModal();
+      document.getElementById("btnCloseHelp").onclick = () => document.getElementById("helpModal").classList.add("hidden");
+      document.getElementById("btnGotItHelp").onclick = () => {
+        document.getElementById("helpModal").classList.add("hidden");
+        playSound("tap");
+      };
+      document.getElementById("tabHelpWS").onclick = () => switchHelpTab("ws");
+      document.getElementById("tabHelpCW").onclick = () => switchHelpTab("cw");
+      document.getElementById("tabHelpTips").onclick = () => switchHelpTab("tips");
+
+      /* =========================
+         SHOP MODAL
+      ========================= */
+      function openShop(preferredTab) {
+        const inGame = !document.getElementById("viewGame").classList.contains("hidden");
+        activeShopTab = preferredTab || (inGame ? "match" : "perm");
+        document.getElementById("shopFeedbackBanner").textContent =
+          "Use suas moedas conquistadas para poderes na partida ou melhorias permanentes!";
+        renderShopModal();
+        document.getElementById("shopModal").classList.remove("hidden");
+      }
+
+      function renderShopModal() {
+        applyTheme();
+        const inGame = !document.getElementById("viewGame").classList.contains("hidden");
+        document.getElementById("tabShopMatch").classList.toggle("active", activeShopTab === "match");
+        document.getElementById("tabShopPerm").classList.toggle("active", activeShopTab === "perm");
+
+        const container = document.getElementById("shopListContainer");
+        container.innerHTML = "";
+
+        if (activeShopTab === "match") {
+          const matchItems = [
+            {
+              title: "👁️ Revelar Lista das 6 Escondidas",
+              desc: "Mostra os nomes das 6 palavras bônus secretas desta fase para caçar e lucrar.",
+              cost: 30,
+              disabled: !inGame || currentMode !== "ws" || wsBonusListRevealed,
+              btnLabel: wsBonusListRevealed ? "Revelado ✓" : "30🪙",
+              action: () => {
+                if (buyRevealHiddenBonusList()) {
+                  renderShopModal();
+                }
+              }
+            },
+            {
+              title: "🧭 Radar de Palavra Bônus",
+              desc: "Ilumina na grade a 1ª letra de uma palavra bônus oculta e indica a direção.",
+              cost: 15,
+              disabled: !inGame || currentMode !== "ws",
+              btnLabel: "15🪙",
+              action: () => {
+                if (buyRadarBonusWord()) {
+                  renderShopModal();
+                }
+              }
+            },
+            {
+              title: "✨ Revelar Letra Padrão",
+              desc: "Ilumina a 1ª letra (Caça-Palavras) ou preenche uma letra correta (Cruzadas).",
+              cost: 20,
+              disabled: !inGame,
+              btnLabel: "20🪙",
+              action: () => {
+                document.getElementById("btnHintLetter").click();
+                renderShopModal();
+              }
+            },
+            {
+              title: "🎯 Resolver Palavra Padrão",
+              desc: "Completa automaticamente uma palavra padrão pendente na fase atual.",
+              cost: 35,
+              disabled: !inGame,
+              btnLabel: "35🪙",
+              action: () => {
+                document.getElementById("btnHintWord").click();
+                renderShopModal();
+              }
+            }
+          ];
+
+          if (!inGame) {
+            const note = document.createElement("div");
+            note.style.cssText = "font-size:0.78rem;color:var(--muted);padding:8px 10px;border-radius:8px;background:var(--surface-2)";
+            note.textContent = "Entre em uma fase para ativar os poderes instantâneos de partida.";
+            container.appendChild(note);
+          }
+
+          matchItems.forEach((it) => {
+            const row = document.createElement("div");
+            row.className = "shop-item";
+            row.innerHTML = `
+              <div class="shop-item-info">
+                <div class="shop-item-title">${it.title}</div>
+                <div class="shop-item-desc">${it.desc}</div>
+              </div>
+            `;
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = it.disabled ? "" : "primary";
+            btn.disabled = it.disabled;
+            btn.textContent = it.btnLabel;
+            btn.onclick = it.action;
+            row.appendChild(btn);
+            container.appendChild(row);
+          });
+        } else {
+          state.shop = state.shop || {
+            unlockedThemes: ["almanaque", "moleskine"],
+            extraIcons: false,
+            goldFrame: false,
+            doubleBonus: false
+          };
+
+          const permItems = [
+            {
+              title: "⚡ Amuleto Dobro de Bônus",
+              desc: "Cada palavra bônus secreta encontrada rende +40🪙 em vez de +25🪙 para sempre!",
+              owned: Boolean(state.shop.doubleBonus),
+              cost: 100,
+              onBuy: () => {
+                state.shop.doubleBonus = true;
+              }
+            },
+            {
+              title: "🌌 Tema Noite Estrelada",
+              desc: "Visual escuro elegante para leitura noturna com alto contraste.",
+              owned: state.shop.unlockedThemes.includes("noite"),
+              cost: 40,
+              onBuy: () => {
+                if (!state.shop.unlockedThemes.includes("noite")) state.shop.unlockedThemes.push("noite");
+                state.theme = "noite";
+              },
+              onEquip: () => {
+                state.theme = "noite";
+              }
+            },
+            {
+              title: "📰 Tema Revista Coquetel",
+              desc: "Visual clássico de bancas de jornal em azul náutico e branco editorial.",
+              owned: state.shop.unlockedThemes.includes("coquetel"),
+              cost: 60,
+              onBuy: () => {
+                if (!state.shop.unlockedThemes.includes("coquetel")) state.shop.unlockedThemes.push("coquetel");
+                state.theme = "coquetel";
+              },
+              onEquip: () => {
+                state.theme = "coquetel";
+              }
+            },
+            {
+              title: "🔮 Pacote Avatares Mestre das Letras",
+              desc: "Desbloqueia 8 novos ícones exclusivos (🔮, 👑, 🦊, 🚀, 🏆, 🧭, 🎨, 🌟) no seu perfil.",
+              owned: Boolean(state.shop.extraIcons),
+              cost: 50,
+              onBuy: () => {
+                state.shop.extraIcons = true;
+              }
+            },
+            {
+              title: "👑 Moldura Dourada de Credencial",
+              desc: "Aplica uma borda dourada brilhante com efeito luxuoso ao redor do seu avatar.",
+              owned: Boolean(state.shop.goldFrame),
+              cost: 80,
+              onBuy: () => {
+                state.shop.goldFrame = true;
+              }
+            }
+          ];
+
+          permItems.forEach((it) => {
+            const row = document.createElement("div");
+            row.className = "shop-item";
+            row.innerHTML = `
+              <div class="shop-item-info">
+                <div class="shop-item-title">${it.title}</div>
+                <div class="shop-item-desc">${it.desc}</div>
+              </div>
+            `;
+            const btn = document.createElement("button");
+            btn.type = "button";
+            if (it.owned) {
+              btn.textContent = it.onEquip ? "Aplicar ✓" : "Adquirido ✓";
+              if (it.onEquip) {
+                btn.onclick = () => {
+                  it.onEquip();
+                  saveState();
+                  applyTheme();
+                  playSound("tap");
+                  showToast(`🎨 ${it.title} aplicado!`);
+                };
+              } else {
+                btn.disabled = true;
+              }
+            } else {
+              btn.className = "secondary";
+              btn.textContent = `${it.cost}🪙`;
+              btn.onclick = () => {
+                if (!spendCoins(it.cost)) {
+                  document.getElementById("shopFeedbackBanner").textContent =
+                    `❌ Moedas insuficientes (${it.cost}🪙 necessárias).`;
+                  return;
+                }
+                it.onBuy();
+                saveState();
+                applyTheme();
+                renderAvatar(document.getElementById("lobbyAvatar"), state.profile);
+                playSound("ok");
+                popSticker("ok", { emoji: "🛍️", label: "Item Desbloqueado!" });
+                showToast(`🎉 ${it.title} desbloqueado!`);
+                renderShopModal();
+              };
+            }
+            row.appendChild(btn);
+            container.appendChild(row);
+          });
+        }
+      }
+
+      document.getElementById("btnShopTop").onclick = () => openShop();
+      document.getElementById("btnShopLobby").onclick = () => openShop("perm");
+      document.getElementById("btnOpenShopInGame").onclick = () => openShop("match");
+      document.getElementById("btnCloseShop").onclick = () => document.getElementById("shopModal").classList.add("hidden");
+      document.getElementById("tabShopMatch").onclick = () => {
+        activeShopTab = "match";
+        renderShopModal();
+      };
+      document.getElementById("tabShopPerm").onclick = () => {
+        activeShopTab = "perm";
+        renderShopModal();
+      };
+      document.getElementById("btnRevealBonusList").onclick = () => buyRevealHiddenBonusList();
+      document.getElementById("btnRadarBonus").onclick = () => buyRadarBonusWord();
+
+      /* =========================
+         FINAL CONTROLS & BOOT
+      ========================= */
+      document.getElementById("btnSound").onclick = () => {
+        state.sound = !state.sound;
+        saveState();
+        applyTheme();
+        if (state.sound) playSound("tap");
+        showToast(state.sound ? "Som ativado 🔊" : "Som silenciado 🔇");
+      };
+
+      document.getElementById("btnBackHome").onclick = () => renderLobby();
+      document.getElementById("btnWinLobby").onclick = () => {
+        document.getElementById("winModal").classList.add("hidden");
+        renderLobby();
+      };
+      document.getElementById("btnWinNext").onclick = () => {
+        document.getElementById("winModal").classList.add("hidden");
+        const nextLvl = activeLevel < 50 ? activeLevel + 1 : 1;
+        launchLevel(nextLvl);
+      };
+
+      document.getElementById("btnStickerCheer").onclick = () => {
+        playSound("ok");
+        popSticker("ok");
+      };
+
+      document.querySelectorAll(".mode-btn").forEach((btn) => {
+        btn.onclick = () => {
+          currentMode = btn.dataset.mode;
+          renderLobby();
+        };
+      });
+
+      document.querySelectorAll(".diff-btn").forEach((btn) => {
+        btn.onclick = () => {
+          currentDiff = btn.dataset.diff;
+          renderLobby();
+        };
+      });
+
+      document.getElementById("btnPlayNext").onclick = () => {
+        for (let lvl = 1; lvl <= 50; lvl++) {
+          const key = `${currentMode}_${currentCat}_${currentDiff}_${lvl}`;
+          if (!state.completed || !state.completed[key]) {
+            launchLevel(lvl);
+            return;
+          }
+        }
+        launchLevel(1);
+      };
+
+      function stepCrosswordClue(delta) {
+        if (!cwData || !cwData.words.length) return;
+        cwActiveWordIdx = (cwActiveWordIdx + delta + cwData.words.length) % cwData.words.length;
+        const w = cwData.words[cwActiveWordIdx];
+        cwDirection = w.dir;
+        cwCursor = { ...w.cells[0] };
+        renderCrossword();
+      }
+
+      document.getElementById("btnPrevClue").onclick = () => stepCrosswordClue(-1);
+      document.getElementById("btnNextClue").onclick = () => stepCrosswordClue(1);
+      document.getElementById("btnToggleDir").onclick = () => {
+        if (!cwData || !cwData.words.length) return;
+        const matching = cwData.words
+          .map((w, idx) => ({ w, idx }))
+          .filter((item) => item.w.cells.some((pt) => pt.r === cwCursor.r && pt.c === cwCursor.c));
+        if (matching.length > 1) {
+          const other = matching.find((m) => m.idx !== cwActiveWordIdx);
+          if (other) {
+            cwActiveWordIdx = other.idx;
+            cwDirection = other.w.dir;
+            renderCrossword();
+          }
+        } else if (matching.length === 1) {
+          // Inverte direção da pista atual
+          const otherDir = cwDirection === "H" ? "V" : "H";
+          const alt = cwData.words.find((w) => w.dir === otherDir);
+          if (alt) {
+            cwActiveWordIdx = cwData.words.indexOf(alt);
+            cwDirection = alt.dir;
+            cwCursor = { ...alt.cells[0] };
+            renderCrossword();
+          }
+        }
+      };
+
+      // Swipe e clique no banner de dicas das cruzadas
+      let bannerStartX = 0;
+      const cwBannerEl = document.getElementById("cwActiveBanner");
+      cwBannerEl.addEventListener("touchstart", (e) => {
+        if (e.touches && e.touches[0]) bannerStartX = e.touches[0].clientX;
+      }, { passive: true });
+      cwBannerEl.addEventListener("touchend", (e) => {
+        if (e.changedTouches && e.changedTouches[0]) {
+          const diffX = e.changedTouches[0].clientX - bannerStartX;
+          if (Math.abs(diffX) > 36) {
+            stepCrosswordClue(diffX < 0 ? 1 : -1);
+          }
+        }
+      });
+      cwBannerEl.onclick = (e) => {
+        if (e.target.tagName.toLowerCase() === "button") return;
+        document.getElementById("btnToggleDir").click();
+      };
+
+      // Suporte completo a teclado físico nas palavras cruzadas
+      window.addEventListener("keydown", (e) => {
+        if (document.getElementById("viewGame").classList.contains("hidden")) return;
+        if (currentMode !== "cw" || !cwData || !cwData.words.length) return;
+
+        if (e.key === "Backspace") {
+          e.preventDefault();
+          handleCrosswordInput("BACKSPACE");
+        } else if (e.key === " " || e.key === "Spacebar") {
+          e.preventDefault();
+          document.getElementById("btnToggleDir").click();
+        } else if (e.key === "Tab") {
+          e.preventDefault();
+          stepCrosswordClue(e.shiftKey ? -1 : 1);
+        } else if (e.key === "Enter") {
+          e.preventDefault();
+          stepCrosswordClue(1);
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          moveCwCursor(0, -1);
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          moveCwCursor(0, 1);
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          moveCwCursor(-1, 0);
+        } else if (e.key === "ArrowDown") {
+          e.preventDefault();
+          moveCwCursor(1, 0);
+        } else if (/^[a-zA-ZçÇ]$/.test(e.key)) {
+          e.preventDefault();
+          handleCrosswordInput(e.key);
+        }
+      });
+
+      // Inicialização
+      applyTheme();
+      if (!state.profile) {
+        openOnboarding(false);
+      } else {
+        renderLobby();
+      }
+    })();
+  </script>
+</body>
+</html>

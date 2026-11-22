@@ -1,0 +1,20 @@
+{
+  "name": "Almanaque & Letra — Caça-Palavras e Cruzadas",
+  "short_name": "Almanaque",
+  "description": "Passatempos clássicos de Caça-Palavras e Palavras Cruzadas em português, com temas, dicas e loja de moedas.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4efe4",
+  "theme_color": "#2b4c3f",
+  "lang": "pt-BR",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

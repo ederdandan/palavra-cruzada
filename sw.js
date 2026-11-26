@@ -1,4 +1,4 @@
-const CACHE_NAME = "almanaque-letra-v2";
+const CACHE_NAME = "almanaque-letra-v3";
 const ASSETS = [
   "./",
   "./index.html",

@@ -1,4 +1,4 @@
-const CACHE_NAME = "almanaque-letra-v3";
+const CACHE_NAME = "almanaque-letra-v4";
 const ASSETS = [
   "./",
   "./index.html",
@@ -27,6 +27,8 @@ self.addEventListener("activate", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
+  // Métricas (GoatCounter): sempre pela rede, nunca no cache.
+  if (/goatcounter\.com|gc\.zgo\.at/.test(e.request.url)) return;
   e.respondWith(
     caches.match(e.request).then((cached) => cached || fetch(e.request).catch(() => caches.match("./index.html")))
   );
